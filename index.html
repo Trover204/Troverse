@@ -1,1068 +1,1487 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Troverse</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Syne:wght@400;500;700;800&display=swap" rel="stylesheet">
-<style>
-  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Troverse</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Syne:wght@400;500;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Limelight&display=swap" rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  :root {
-    --black: #000;
-    --white: #fff;
-    --off-white: #e8e4dc;
-    --muted: #888880;
-    --accent: #c8b89a;
-    --dim: rgba(255,255,255,0.06);
-  }
+        :root {
+            --black: #0e0e0e;
+            --white: #fff;
+            --off-white: #e8e4dc;
+            --muted: #888880;
+            --accent: #c8b89a;
+            --dim: rgba(255, 255, 255, 0.06);
+        }
 
-  html { scroll-behavior: smooth; }
+        html {
+            scroll-behavior: smooth;
+        }
 
-  body {
-    background: var(--black);
-    color: var(--off-white);
-    font-family: 'Syne', sans-serif;
-    overflow-x: hidden;
-    cursor: none;
-  }
+        body {
+            background: var(--black);
+            color: var(--off-white);
+            font-family: 'Syne', sans-serif;
+            overflow-x: hidden;
+            cursor: none;
+        }
 
-  /* Custom cursor */
-  .cursor {
-    position: fixed;
-    width: 8px; height: 8px;
-    background: var(--off-white);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
-    transform: translate(-50%, -50%);
-    transition: transform 0.1s, opacity 0.3s;
-  }
-  .cursor-ring {
-    position: fixed;
-    width: 32px; height: 32px;
-    border: 1px solid rgba(232,228,220,0.4);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9998;
-    transform: translate(-50%, -50%);
-    transition: transform 0.25s ease, width 0.25s, height 0.25s, border-color 0.25s;
-  }
+        /* Custom cursor */
+        .cursor {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: var(--off-white);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s, opacity 0.3s;
+        }
 
-  /* NAV */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 2rem 4rem;
-    mix-blend-mode: normal;
-  }
-  nav::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent);
-    pointer-events: none;
-  }
-  .nav-logo {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 1.25rem;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--off-white);
-    text-decoration: none;
-    position: relative;
-    z-index: 1;
-  }
-  .nav-links {
-    display: flex; gap: 3rem;
-    list-style: none;
-    position: relative; z-index: 1;
-  }
-  .nav-links a {
-    font-size: 0.75rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--muted);
-    text-decoration: none;
-    transition: color 0.3s;
-    position: relative;
-  }
-  .nav-links a::after {
-    content: '';
-    position: absolute; bottom: -3px; left: 0;
-    width: 0; height: 1px;
-    background: var(--off-white);
-    transition: width 0.3s;
-  }
-  .nav-links a:hover { color: var(--off-white); }
-  .nav-links a:hover::after { width: 100%; }
+        .cursor-ring {
+            position: fixed;
+            width: 32px;
+            height: 32px;
+            border: 1px solid rgba(232, 228, 220, 0.4);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: transform 0.25s ease, width 0.25s, height 0.25s, border-color 0.25s;
+        }
 
-  /* HERO */
-  #hero {
-    position: relative;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 0 4rem;
-    overflow: hidden;
-  }
+        /* NAV */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 4rem;
+            mix-blend-mode: normal;
+        }
 
-  /* Galaxy canvas */
-  #galaxy-canvas {
-    position: absolute;
-    inset: 0;
-    width: 100%; height: 100%;
-    opacity: 0.85;
-  }
+        nav::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), transparent);
+            pointer-events: none;
+        }
 
-  .hero-eyebrow {
-    font-size: 0.7rem;
-    letter-spacing: 0.35em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 1.5rem;
-    opacity: 0;
-    animation: fadeUp 1s 0.6s forwards;
-  }
-  .hero-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 300;
-    font-size: clamp(3.5rem, 8vw, 7.5rem);
-    line-height: 1.05;
-    letter-spacing: -0.01em;
-    color: var(--off-white);
-    max-width: 800px;
-    opacity: 0;
-    animation: fadeUp 1s 0.9s forwards;
-    position: relative;
-    z-index: 2;
-  }
-  .hero-title em {
-    font-style: italic;
-    color: var(--accent);
-  }
-  .hero-subtitle {
-    font-size: 0.8rem;
-    letter-spacing: 0.15em;
-    color: var(--muted);
-    margin-top: 2rem;
-    opacity: 0;
-    animation: fadeUp 1s 1.2s forwards;
-    position: relative; z-index: 2;
-  }
-  .hero-scroll {
-    position: absolute;
-    bottom: 2.5rem; left: 4rem;
-    display: flex; align-items: center; gap: 1rem;
-    font-size: 0.65rem;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--muted);
-    opacity: 0;
-    animation: fadeUp 1s 1.6s forwards;
-  }
-  .hero-scroll-line {
-    width: 40px; height: 1px;
-    background: var(--muted);
-    position: relative;
-    overflow: hidden;
-  }
-  .hero-scroll-line::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: var(--off-white);
-    transform: translateX(-100%);
-    animation: scanLine 2s 2s infinite;
-  }
+        .nav-logo {
+            font-family: "Limelight", sans-serif;
+            font-weight: 800;
+            font-size: 30px;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--off-white);
+            text-decoration: none;
+            position: relative;
+            z-index: 1;
+        }
 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes scanLine {
-    from { transform: translateX(-100%); }
-    to { transform: translateX(100%); }
-  }
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+            position: relative;
+            z-index: 1;
+        }
 
-  /* ABOUT / INTRO */
-  #about {
-    padding: 10rem 4rem;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-  .section-label {
-    font-size: 0.65rem;
-    letter-spacing: 0.35em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 3rem;
-    display: flex; align-items: center; gap: 1rem;
-  }
-  .section-label::before {
-    content: '';
-    display: inline-block;
-    width: 24px; height: 1px;
-    background: var(--accent);
-  }
-  .about-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 5rem;
-    align-items: start;
-  }
-  .about-heading {
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 300;
-    font-size: clamp(2.5rem, 4vw, 3.5rem);
-    line-height: 1.15;
-    color: var(--off-white);
-  }
-  .about-heading em { font-style: italic; color: var(--accent); }
-  .about-body {
-    color: var(--muted);
-    font-size: 0.9rem;
-    line-height: 1.9;
-    border-top: 1px solid rgba(255,255,255,0.08);
-    padding-top: 2rem;
-  }
-  .about-body p + p { margin-top: 1.5rem; }
-  .about-stats {
-    display: flex;
-    gap: 3rem;
-    margin-top: 3rem;
-    padding-top: 2rem;
-    border-top: 1px solid rgba(255,255,255,0.08);
-    grid-column: 1 / -1;
-  }
-  .stat-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 3rem;
-    font-weight: 300;
-    color: var(--off-white);
-    line-height: 1;
-  }
-  .stat-label {
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-top: 0.5rem;
-  }
+        .nav-links a {
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--muted);
+            text-decoration: none;
+            transition: color 0.3s;
+            position: relative;
+        }
 
-  /* WORK */
-  #work {
-    padding: 8rem 0;
-    overflow: hidden;
-  }
-  #work .section-label {
-    padding: 0 4rem;
-    margin-bottom: 5rem;
-  }
-  .work-heading-block {
-    padding: 0 4rem;
-    margin-bottom: 6rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-  }
-  .work-heading {
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 300;
-    font-size: clamp(2.5rem, 4vw, 3.5rem);
-    color: var(--off-white);
-    line-height: 1.1;
-  }
-  .work-count {
-    font-size: 0.7rem;
-    letter-spacing: 0.15em;
-    color: var(--muted);
-    text-transform: uppercase;
-    padding-bottom: 0.5rem;
-  }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--off-white);
+            transition: width 0.3s;
+        }
 
-  .planet-project {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    min-height: 80vh;
-    align-items: center;
-    border-top: 1px solid rgba(255,255,255,0.06);
-    position: relative;
-    overflow: hidden;
-    opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
-  }
-  .planet-project.visible { opacity: 1; transform: translateY(0); }
+        .nav-links a:hover {
+            color: var(--off-white);
+        }
 
-  .planet-side {
-    position: relative;
-    height: 80vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-  }
+        .nav-links a:hover::after {
+            width: 100%;
+        }
 
-  .planet-canvas-wrapper {
-    width: 360px; height: 360px;
-    position: relative;
-    flex-shrink: 0;
-  }
-  canvas.planet-canvas {
-    width: 100%; height: 100%;
-    display: block;
-  }
+        /* HERO */
+        #hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 0 4rem;
+            overflow: hidden;
+        }
 
-  .planet-side::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.02) 0%, transparent 70%);
-    pointer-events: none;
-  }
+        /* Galaxy canvas */
+        #galaxy-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.85;
+        }
 
-  .project-data {
-    padding: 4rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-  .project-index {
-    font-size: 0.65rem;
-    letter-spacing: 0.3em;
-    color: var(--accent);
-    margin-bottom: 1.5rem;
-    font-family: 'Syne', sans-serif;
-  }
-  .project-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 300;
-    font-size: clamp(2rem, 3.5vw, 3rem);
-    color: var(--off-white);
-    line-height: 1.1;
-    margin-bottom: 2rem;
-  }
-  .project-desc {
-    font-size: 0.875rem;
-    line-height: 1.85;
-    color: var(--muted);
-    max-width: 380px;
-    margin-bottom: 2.5rem;
-  }
-  .project-tags {
-    display: flex; gap: 0.75rem; flex-wrap: wrap;
-    margin-bottom: 3rem;
-  }
-  .tag {
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--muted);
-    border: 1px solid rgba(255,255,255,0.12);
-    padding: 0.4rem 0.9rem;
-    border-radius: 2px;
-    transition: border-color 0.3s, color 0.3s;
-  }
-  .tag:hover { border-color: var(--accent); color: var(--accent); }
+        .hero-eyebrow {
+            font-size: 0.7rem;
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: fadeUp 1s 0.6s forwards;
+        }
 
-  .project-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    font-size: 0.7rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--off-white);
-    text-decoration: none;
-    width: fit-content;
-  }
-  .project-link-line {
-    display: inline-block;
-    width: 32px; height: 1px;
-    background: var(--off-white);
-    transition: width 0.3s;
-  }
-  .project-link:hover .project-link-line { width: 56px; }
+        .hero-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 300;
+            font-size: clamp(3.5rem, 8vw, 7.5rem);
+            line-height: 1.05;
+            letter-spacing: -0.01em;
+            color: var(--off-white);
+            max-width: 800px;
+            opacity: 0;
+            animation: fadeUp 1s 0.9s forwards;
+            position: relative;
+            z-index: 2;
+        }
 
-  .planet-project:nth-child(even) .planet-side { order: 2; }
-  .planet-project:nth-child(even) .project-data { order: 1; }
+        .hero-title em {
+            font-style: italic;
+            color: var(--accent);
+        }
 
-  /* CONTACT */
-  #contact {
-    padding: 10rem 4rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    border-top: 1px solid rgba(255,255,255,0.06);
-  }
-  .contact-heading {
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 300;
-    font-size: clamp(3rem, 5vw, 5rem);
-    line-height: 1.05;
-    color: var(--off-white);
-  }
-  .contact-heading em { font-style: italic; color: var(--accent); }
-  .contact-subtext {
-    font-size: 0.875rem;
-    line-height: 1.85;
-    color: var(--muted);
-    margin-top: 2rem;
-    max-width: 340px;
-  }
-  .contact-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-  .form-field {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  .form-label {
-    font-size: 0.65rem;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-  .form-input {
-    background: transparent;
-    border: none;
-    border-bottom: 1px solid rgba(255,255,255,0.12);
-    color: var(--off-white);
-    font-family: 'Syne', sans-serif;
-    font-size: 0.9rem;
-    padding: 0.75rem 0;
-    outline: none;
-    transition: border-color 0.3s;
-    width: 100%;
-  }
-  .form-input:focus { border-bottom-color: var(--accent); }
-  .form-input::placeholder { color: rgba(136,136,128,0.4); }
-  textarea.form-input { resize: none; height: 100px; }
-  .form-submit {
-    display: inline-flex;
-    align-items: center;
-    gap: 1rem;
-    background: transparent;
-    border: 1px solid rgba(255,255,255,0.2);
-    color: var(--off-white);
-    font-family: 'Syne', sans-serif;
-    font-size: 0.7rem;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    padding: 1rem 2rem;
-    cursor: none;
-    transition: border-color 0.3s, background 0.3s;
-    align-self: flex-start;
-    margin-top: 0.5rem;
-  }
-  .form-submit:hover {
-    border-color: var(--accent);
-    background: rgba(200,184,154,0.06);
-  }
+        .hero-subtitle {
+            font-size: 0.8rem;
+            letter-spacing: 0.15em;
+            color: var(--muted);
+            margin-top: 2rem;
+            opacity: 0;
+            animation: fadeUp 1s 1.2s forwards;
+            position: relative;
+            z-index: 2;
+        }
 
-  /* FOOTER */
-  footer {
-    border-top: 1px solid rgba(255,255,255,0.06);
-    padding: 2.5rem 4rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .footer-logo {
-    font-weight: 800;
-    font-size: 0.8rem;
-    letter-spacing: 0.35em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-  .footer-copy {
-    font-size: 0.65rem;
-    letter-spacing: 0.15em;
-    color: rgba(136,136,128,0.5);
-  }
-  .footer-links {
-    display: flex; gap: 2rem;
-    list-style: none;
-  }
-  .footer-links a {
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--muted);
-    text-decoration: none;
-    transition: color 0.3s;
-  }
-  .footer-links a:hover { color: var(--off-white); }
-</style>
+        .hero-scroll {
+            position: absolute;
+            bottom: 2.5rem;
+            left: 4rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.65rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--muted);
+            opacity: 0;
+            animation: fadeUp 1s 1.6s forwards;
+        }
+
+        .hero-scroll-line {
+            width: 40px;
+            height: 1px;
+            background: var(--muted);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-scroll-line::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--off-white);
+            transform: translateX(-100%);
+            animation: scanLine 2s 2s infinite;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scanLine {
+            from {
+                transform: translateX(-100%);
+            }
+
+            to {
+                transform: translateX(100%);
+            }
+        }
+
+        /* ABOUT / INTRO */
+        #about {
+            padding: 10rem 4rem;
+            background: linear-gradient(0deg, #0e0e0e 0%, #2f3e56 15%, #2f3e56 70%, #05050a 100%);
+            position: relative;
+        }
+
+        #about .about-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        #about .section-label {
+            color: #b89a6a;
+        }
+
+        #about .section-label::before {
+            background: #b89a6a;
+        }
+
+        .section-label {
+            font-size: 0.65rem;
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 3rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-label::before {
+            content: '';
+            display: inline-block;
+            width: 24px;
+            height: 1px;
+            background: var(--accent);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: start;
+        }
+
+        /* ── SCROLL-REVEAL BASE ── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(36px);
+            transition: opacity 0.75s cubic-bezier(0.22,1,0.36,1),
+                        transform 0.75s cubic-bezier(0.22,1,0.36,1);
+        }
+        .reveal.reveal--left {
+            transform: translateX(-40px);
+        }
+        .reveal.reveal--right {
+            transform: translateX(40px);
+        }
+        .reveal.reveal--scale {
+            transform: translateY(20px) scale(0.96);
+        }
+        .reveal.is-visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        /* stagger delays */
+        .reveal[data-delay="1"] { transition-delay: 0.1s; }
+        .reveal[data-delay="2"] { transition-delay: 0.2s; }
+        .reveal[data-delay="3"] { transition-delay: 0.3s; }
+        .reveal[data-delay="4"] { transition-delay: 0.4s; }
+        .reveal[data-delay="5"] { transition-delay: 0.5s; }
+        .reveal[data-delay="6"] { transition-delay: 0.6s; }
+        .reveal[data-delay="7"] { transition-delay: 0.7s; }
+
+        /* stat counter animation */
+        @keyframes countUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .stat-num.counted {
+            animation: countUp 0.6s cubic-bezier(0.22,1,0.36,1) both;
+        }
+
+        /* form field slide-in */
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+
+        /* underline draw for section-label */
+        @keyframes drawLine {
+            from { width: 0; }
+            to   { width: 24px; }
+        }
+        .section-label.is-visible::before {
+            animation: drawLine 0.5s 0.2s cubic-bezier(0.22,1,0.36,1) both;
+            width: 0;
+        }
+
+        .about-heading {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 300;
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            line-height: 1.15;
+            color: white;
+        }
+
+        .about-heading em {
+            font-style: italic;
+            color: #b89a6a;
+        }
+
+        .about-body {
+            color: white;
+            font-size: 0.9rem;
+            line-height: 1.9;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            padding-top: 2rem;
+        }
+
+        .about-body p+p {
+            margin-top: 1.5rem;
+        }
+
+        .about-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+            margin-top: 4rem;
+            padding-top: 3rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            grid-column: 1 / -1;
+        }
+
+        .about-stats>div {
+            padding: 2rem 2.5rem;
+            border-right: 1px solid rgba(0, 0, 0, 0.08);
+            transition: background 0.3s;
+        }
+
+        .about-stats>div:first-child {
+            padding-left: 0;
+        }
+
+        .about-stats>div:last-child {
+            border-right: none;
+        }
+
+        .about-stats>div:hover {
+            background: rgba(184, 154, 106, 0.05);
+        }
+
+        .stat-num {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.5rem;
+            font-weight: 300;
+            color: #b89a6a;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: white;
+            margin-top: 0.6rem;
+        }
+
+        /* Partners row */
+        .partner {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            grid-column: 1 / -1;
+            margin-top: 3rem;
+            padding-top: 3rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+            align-items: center;
+        }
+
+        .partner-label {
+            font-size: 0.6rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: #bbb;
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+
+        .partner-logo {
+            height: 90px;
+            min-width: 90px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #aaa;
+            padding: 0 1.2rem;
+            font-weight: 600;
+        }
+
+        .partner-logo img {
+            height: 100px;
+            width: 100px;
+            border-radius: 50%;
+            object-fit: contain;
+        }
+
+        /* WORK */
+        #work {
+            padding: 8rem 0;
+            overflow: hidden;
+        }
+
+        #work .section-label {
+            padding: 0 4rem;
+            margin-bottom: 5rem;
+            color: var(--accent);
+        }
+
+        #work .section-label::before {
+            background: var(--accent);
+        }
+
+        .work-heading-block {
+            padding: 0 4rem;
+            margin-bottom: 6rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .work-heading {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 300;
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            color: var(--off-white);
+            line-height: 1.1;
+        }
+
+        .work-count {
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            color: var(--muted);
+            text-transform: uppercase;
+            padding-bottom: 0.5rem;
+        }
+
+        .planet-project {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 80vh;
+            align-items: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 2s ease, transform 2s ease;
+        }
+
+        .planet-project.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .planet-side {
+            position: relative;
+            height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+
+
+        canvas.planet-canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .planet-side::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.02) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .project-data {
+            padding: 4rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .project-index {
+            font-size: 0.65rem;
+            letter-spacing: 0.3em;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            font-family: 'Syne', sans-serif;
+        }
+
+        .project-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 300;
+            font-size: clamp(2rem, 3.5vw, 3rem);
+            color: var(--off-white);
+            line-height: 1.1;
+            margin-bottom: 2rem;
+        }
+
+        .project-desc {
+            font-size: 0.875rem;
+            line-height: 1.85;
+            color: var(--muted);
+            max-width: 380px;
+            margin-bottom: 2.5rem;
+        }
+
+        .project-tags {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        .tag {
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--muted);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 0.4rem 0.9rem;
+            border-radius: 2px;
+            transition: border-color 0.3s, color 0.3s;
+        }
+
+        .tag:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--off-white);
+            text-decoration: none;
+            width: fit-content;
+        }
+
+        .project-link-line {
+            display: inline-block;
+            width: 32px;
+            height: 1px;
+            background: var(--off-white);
+            transition: width 0.3s;
+        }
+
+        .project-link:hover .project-link-line {
+            width: 56px;
+        }
+
+        .planet-project:nth-child(even) .planet-side {
+            order: 2;
+        }
+
+        .planet-project:nth-child(even) .project-data {
+            order: 1;
+        }
+
+        /* CONTACT */
+        #contact {
+            padding: 10rem 4rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        #contact-wrapper {
+            background: linear-gradient(180deg, #0e0e0e 0%, #2f3e56 15%, #2f3e56 70%, #0e0e0e 100%);
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        .contact-heading {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 300;
+            font-size: clamp(3rem, 5vw, 5rem);
+            line-height: 1.05;
+            color: white;
+        }
+
+        .contact-heading em {
+            font-style: italic;
+            color: #b89a6a;
+        }
+
+        .contact-subtext {
+            font-size: 0.875rem;
+            line-height: 1.85;
+            color: white;
+            margin-top: 2rem;
+            max-width: 340px;
+        }
+
+        .contact-info {
+            margin-top: 3rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .contact-info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .contact-info-label {
+            font-size: 0.6rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: #b89a6a;
+        }
+
+        .contact-info-value {
+            font-size: 0.85rem;
+            color: white;
+            letter-spacing: 0.05em;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-field {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-label {
+            font-size: 0.65rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: #b89a6a;
+        }
+
+        .form-input {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+            color: #1a1a1a;
+            font-family: 'Syne', sans-serif;
+            font-size: 0.9rem;
+            padding: 0.75rem 0;
+            outline: none;
+            transition: border-color 0.3s;
+            width: 100%;
+        }
+
+        .form-input:focus {
+            border-bottom-color: #b89a6a;
+        }
+
+        .form-input::placeholder {
+            color: rgba(0, 0, 0, 0.2);
+        }
+
+        textarea.form-input {
+            resize: none;
+            height: 100px;
+        }
+
+        .form-submit {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            background: #1a1a1a;
+            border: 1px solid #1a1a1a;
+            border-radius: 20px;
+            color: #fff;
+            font-family: 'Syne', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            padding: 1rem 2.5rem;
+            cursor: none;
+            transition: background 0.3s, border-color 0.3s;
+            align-self: flex-start;
+            margin-top: 0.5rem;
+        }
+
+        .form-submit:hover {
+            background: #b89a6a;
+            border-color: #b89a6a;
+        }
+
+        /* FOOTER */
+        footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 2.5rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-logo {
+            font-weight: 800;
+            font-size: 0.8rem;
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .footer-copy {
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            color: rgba(136, 136, 128, 0.5);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .footer-links a {
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--muted);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--off-white);
+        }
+
+        .planet-canvas-wrapper {
+            width: 360px;
+            height: 360px;
+            border-radius: 50%;
+            overflow: hidden;
+            outline: 4px solid rgba(150, 124, 12, 0.973);
+            outline-offset: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        .planet-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 1s ease;
+        }
+
+        .planet-img:hover {
+            transform: scale(1.1);
+        }
+    </style>
 </head>
+
 <body>
 
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursor-ring"></div>
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-ring" id="cursor-ring"></div>
 
-<nav>
-  <a href="#hero" class="nav-logo">Troverse</a>
-  <ul class="nav-links">
-    <li><a href="#hero">Home</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="#work">Work</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-</nav>
+    <nav>
+        <a href="#hero" class="nav-logo">Troverse</a>
+        <ul class="nav-links">
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#work">Work</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
 
-<!-- HERO -->
-<section id="hero">
-  <canvas id="galaxy-canvas"></canvas>
-  <p class="hero-eyebrow">Creative Portfolio</p>
-  <h1 class="hero-title">Welcome to the<br><em>Troverse</em></h1>
-  <p class="hero-subtitle">Where design meets the cosmos</p>
-  <div class="hero-scroll">
-    <div class="hero-scroll-line"></div>
-    Scroll to explore
-  </div>
-</section>
+    <!-- HERO -->
+    <section id="hero">
+        <canvas id="galaxy-canvas"></canvas>
+        <p class="hero-eyebrow">Creative Portfolio</p>
+        <h1 class="hero-title">Welcome to the<br><em>Troverse</em></h1>
+        <p class="hero-subtitle">Where design meets the cosmos</p>
+        <div class="hero-scroll">
+            <div class="hero-scroll-line"></div>
+            Scroll to explore
+        </div>
+    </section>
 
-<!-- ABOUT -->
-<section id="about">
-  <div class="section-label">About</div>
-  <div class="about-grid">
-    <div>
-      <h2 class="about-heading">Crafting worlds<br>beyond the<br><em>ordinary</em></h2>
-    </div>
-    <div class="about-body">
-      <p>We exist at the intersection of imagination and precision — a creative studio that treats every project as a new universe to explore and shape.</p>
-      <p>Our work spans branding, digital experience, motion design, and spatial storytelling. Each piece is built with intention, informed by culture, and refined through obsessive craft.</p>
-      <p>We believe the best work feels inevitable. Like it couldn't have existed any other way.</p>
-    </div>
-    <div class="about-stats">
-      <div>
-        <div class="stat-num">08</div>
-        <div class="stat-label">Years in orbit</div>
-      </div>
-      <div>
-        <div class="stat-num">42</div>
-        <div class="stat-label">Worlds built</div>
-      </div>
-      <div>
-        <div class="stat-num">17</div>
-        <div class="stat-label">Galaxies explored</div>
-      </div>
-      <div>
-        <div class="stat-num">∞</div>
-        <div class="stat-label">Possibilities</div>
-      </div>
-    </div>
-  </div>
-</section>
+    <!-- ABOUT -->
+    <section id="about">
+        <div class="about-inner">
+            <div class="section-label reveal" data-delay="1">About</div>
+            <div class="about-grid">
+                <div>
+                    <h2 class="about-heading reveal reveal--left" data-delay="2">Crafting worlds<br>beyond the<br><em>ordinary</em></h2>
+                </div>
+                <div class="about-body reveal reveal--right" data-delay="3">
+                    <p>We exist at the intersection of imagination and precision — a creative studio that treats every
+                        project as a new universe to explore and shape.</p>
+                    <p>Our work spans branding, digital experience, motion design, and spatial storytelling. Each piece
+                        is built with intention, informed by culture, and refined through obsessive craft.</p>
+                    <p>We believe the best work feels inevitable. Like it couldn't have existed any other way.</p>
+                </div>
+                <div class="about-stats">
+                    <div class="reveal reveal--scale" data-delay="1">
+                        <div class="stat-num" data-target="08">08</div>
+                        <div class="stat-label">Years in orbit</div>
+                    </div>
+                    <div class="reveal reveal--scale" data-delay="2">
+                        <div class="stat-num" data-target="42">42</div>
+                        <div class="stat-label">Worlds built</div>
+                    </div>
+                    <div class="reveal reveal--scale" data-delay="3">
+                        <div class="stat-num" data-target="17">17</div>
+                        <div class="stat-label">Galaxies explored</div>
+                    </div>
+                    <div class="reveal reveal--scale" data-delay="4">
+                        <div class="stat-num">∞</div>
+                        <div class="stat-label">Possibilities</div>
+                    </div>
+                </div>
+                <div class="partner reveal" data-delay="2">
+                    <div class="partner-label">Trusted by</div>
+                    <div class="partner-logo reveal" data-delay="2"><img src="public/images/partner1.png" alt="" srcset=""></div>
+                    <div class="partner-logo reveal" data-delay="3"><img src="public/images/partner2.png" alt="" srcset=""></div>
+                    <div class="partner-logo reveal" data-delay="4"><img src="public/images/partner3.png" alt="" srcset=""></div>
+                    <div class="partner-logo reveal" data-delay="5"><img src="public/images/partner4.png" alt="" srcset=""></div>
+                    <div class="partner-logo reveal" data-delay="6"><img src="public/images/partner5.png" alt="" srcset=""></div>
+                    <div class="partner-logo reveal" data-delay="7"><img src="public/images/partner6.png" alt="" srcset=""></div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<!-- WORK -->
-<section id="work">
-  <div class="section-label">Selected work</div>
-  <div class="work-heading-block">
-    <h2 class="work-heading">Universes we<br>have shaped</h2>
-    <span class="work-count">04 projects</span>
-  </div>
+    <!-- WORK -->
+    <section id="work">
+        <div class="section-label">Featured works</div>
+        <div class="work-heading-block">
+            <h2 class="work-heading">Universes we<br>have shaped</h2>
+            <span class="work-count">04 projects</span>
+        </div>
 
-  <!-- Project 1 -->
-  <div class="planet-project" data-planet="1">
-    <div class="planet-side">
-      <div class="planet-canvas-wrapper">
-        <canvas class="planet-canvas" id="planet1" width="720" height="720"></canvas>
-      </div>
-    </div>
-    <div class="project-data">
-      <div class="project-index">001 / 004</div>
-      <h3 class="project-title">Nebula Brand<br>Identity System</h3>
-      <p class="project-desc">A complete visual identity for a deep-tech startup navigating the frontier of quantum computing. The system draws from cosmic phenomena — fluid, dynamic, yet grounded.</p>
-      <div class="project-tags">
-        <span class="tag">Brand Identity</span>
-        <span class="tag">Visual System</span>
-        <span class="tag">Motion</span>
-      </div>
-      <a href="#" class="project-link">
-        <span class="project-link-line"></span>
-        View case study
-      </a>
-    </div>
-  </div>
+        <!-- Project 1 -->
+        <div class="planet-project" data-planet="1">
+            <div class="planet-side">
+                <div class="planet-canvas-wrapper">
+                    <a href="#">
+                        <img src="public/images/planetblue.png" class="planet-img" alt="" width="500" height="500"
+                            srcset="">
+                    </a>
+                </div>
+            </div>
+            <div class="project-data">
+                <div class="project-index">001 / 004</div>
+                <h3 class="project-title">Nebula Brand<br>Identity System</h3>
+                <p class="project-desc">A complete visual identity for a deep-tech startup navigating the frontier of
+                    quantum computing. The system draws from cosmic phenomena — fluid, dynamic, yet grounded.</p>
+                <div class="project-tags">
+                    <span class="tag">Brand Identity</span>
+                    <span class="tag">Visual System</span>
+                    <span class="tag">Motion</span>
+                </div>
+                <a href="#" class="project-link">
+                    <span class="project-link-line"></span>
+                    View case study
+                </a>
+            </div>
+        </div>
 
-  <!-- Project 2 -->
-  <div class="planet-project" data-planet="2">
-    <div class="planet-side">
-      <div class="planet-canvas-wrapper">
-        <canvas class="planet-canvas" id="planet2" width="720" height="720"></canvas>
-      </div>
-    </div>
-    <div class="project-data">
-      <div class="project-index">002 / 004</div>
-      <h3 class="project-title">Void Digital<br>Experience</h3>
-      <p class="project-desc">An immersive web platform for a luxury real estate developer. Every interaction was choreographed to evoke the sensation of moving through silent, vast space.</p>
-      <div class="project-tags">
-        <span class="tag">Web Design</span>
-        <span class="tag">Art Direction</span>
-        <span class="tag">Interaction</span>
-      </div>
-      <a href="#" class="project-link">
-        <span class="project-link-line"></span>
-        View case study
-      </a>
-    </div>
-  </div>
+        <!-- Project 2 -->
+        <div class="planet-project" data-planet="2">
+            <div class="planet-side">
+                <div class="planet-canvas-wrapper">
+                    <img src="public/images/planetred.png" class="planet-img" alt="" width="500" height="500" srcset="">
+                </div>
+            </div>
+            <div class="project-data">
+                <div class="project-index">002 / 004</div>
+                <h3 class="project-title">Void Digital<br>Experience</h3>
+                <p class="project-desc">An immersive web platform for a luxury real estate developer. Every interaction
+                    was choreographed to evoke the sensation of moving through silent, vast space.</p>
+                <div class="project-tags">
+                    <span class="tag">Web Design</span>
+                    <span class="tag">Art Direction</span>
+                    <span class="tag">Interaction</span>
+                </div>
+                <a href="#" class="project-link">
+                    <span class="project-link-line"></span>
+                    View case study
+                </a>
+            </div>
+        </div>
 
-  <!-- Project 3 -->
-  <div class="planet-project" data-planet="3">
-    <div class="planet-side">
-      <div class="planet-canvas-wrapper">
-        <canvas class="planet-canvas" id="planet3" width="720" height="720"></canvas>
-      </div>
-    </div>
-    <div class="project-data">
-      <div class="project-index">003 / 004</div>
-      <h3 class="project-title">Stardust Editorial<br>Campaign</h3>
-      <p class="project-desc">A multi-channel editorial campaign for an independent fashion house. Shot in volcanic landscapes and deep forests — places where earth feels alien, beautiful, and untamed.</p>
-      <div class="project-tags">
-        <span class="tag">Editorial</span>
-        <span class="tag">Campaign</span>
-        <span class="tag">Photography</span>
-      </div>
-      <a href="#" class="project-link">
-        <span class="project-link-line"></span>
-        View case study
-      </a>
-    </div>
-  </div>
+        <!-- Project 3 -->
+        <div class="planet-project" data-planet="3">
+            <div class="planet-side">
+                <div class="planet-canvas-wrapper">
+                    <img src="public/images/planetgreen.png" class="planet-img" alt="" width="500" height="500"
+                        srcset="">
+                </div>
+            </div>
+            <div class="project-data">
+                <div class="project-index">003 / 004</div>
+                <h3 class="project-title">Stardust Editorial<br>Campaign</h3>
+                <p class="project-desc">A multi-channel editorial campaign for an independent fashion house. Shot in
+                    volcanic landscapes and deep forests — places where earth feels alien, beautiful, and untamed.</p>
+                <div class="project-tags">
+                    <span class="tag">Editorial</span>
+                    <span class="tag">Campaign</span>
+                    <span class="tag">Photography</span>
+                </div>
+                <a href="#" class="project-link">
+                    <span class="project-link-line"></span>
+                    View case study
+                </a>
+            </div>
+        </div>
 
-  <!-- Project 4 -->
-  <div class="planet-project" data-planet="4">
-    <div class="planet-side">
-      <div class="planet-canvas-wrapper">
-        <canvas class="planet-canvas" id="planet4" width="720" height="720"></canvas>
-      </div>
+        <!-- Project 4 -->
+        <div class="planet-project" data-planet="4">
+            <div class="planet-side">
+                <div class="planet-canvas-wrapper">
+                    <img src="public/images/planetpurple.png" class="planet-img" alt="" width="500" height="500"
+                        srcset="">
+                </div>
+            </div>
+            <div class="project-data">
+                <div class="project-index">004 / 004</div>
+                <h3 class="project-title">Horizon Product<br>Launch</h3>
+                <p class="project-desc">Full creative direction for a flagship product launch — from naming architecture
+                    to launch film. We built a world around the product before the product ever shipped.</p>
+                <div class="project-tags">
+                    <span class="tag">Product Launch</span>
+                    <span class="tag">Film</span>
+                    <span class="tag">Creative Direction</span>
+                </div>
+                <a href="#" class="project-link">
+                    <span class="project-link-line"></span>
+                    View case study
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <div id="contact-wrapper">
+        <section id="contact">
+            <div>
+                <div class="section-label reveal" data-delay="1" style="color:#b89a6a;">Contact</div>
+                <h2 class="contact-heading reveal reveal--left" data-delay="2">Let's build<br>something<br><em>cosmic</em></h2>
+                <p class="contact-subtext reveal" data-delay="3">Whether you have a clear vision or just a feeling — we'd love to hear from
+                    you.
+                    Every great project starts with a conversation.</p>
+                <div class="contact-info">
+                    <div class="contact-info-item reveal" data-delay="4">
+                        <span class="contact-info-label">Email</span>
+                        <span class="contact-info-value">hello@troverse.studio</span>
+                    </div>
+                    <div class="contact-info-item reveal" data-delay="5">
+                        <span class="contact-info-label">Based in</span>
+                        <span class="contact-info-value">Ho Chi Minh City, Vietnam</span>
+                    </div>
+                    <div class="contact-info-item reveal" data-delay="6">
+                        <span class="contact-info-label">Available for projects</span>
+                        <span class="contact-info-value">Starting Q3 2026</span>
+                    </div>
+                </div>
+            </div>
+            <form class="contact-form" onsubmit="return false;">
+                <div class="form-field reveal reveal--right" data-delay="2">
+                    <label class="form-label">Your name</label>
+                    <input type="text" class="form-input" placeholder="Jane Doe">
+                </div>
+                <div class="form-field reveal reveal--right" data-delay="3">
+                    <label class="form-label">Email address</label>
+                    <input type="email" class="form-input" placeholder="jane@studio.com">
+                </div>
+                <div class="form-field reveal reveal--right" data-delay="4">
+                    <label class="form-label">About the project</label>
+                    <textarea class="form-input" placeholder="Tell us about your universe..."></textarea>
+                </div>
+                <button class="form-submit reveal reveal--scale" data-delay="5">
+                    Send message <span style="font-size:1rem;">→</span>
+                </button>
+            </form>
+        </section>
     </div>
-    <div class="project-data">
-      <div class="project-index">004 / 004</div>
-      <h3 class="project-title">Horizon Product<br>Launch</h3>
-      <p class="project-desc">Full creative direction for a flagship product launch — from naming architecture to launch film. We built a world around the product before the product ever shipped.</p>
-      <div class="project-tags">
-        <span class="tag">Product Launch</span>
-        <span class="tag">Film</span>
-        <span class="tag">Creative Direction</span>
-      </div>
-      <a href="#" class="project-link">
-        <span class="project-link-line"></span>
-        View case study
-      </a>
-    </div>
-  </div>
-</section>
 
-<!-- CONTACT -->
-<section id="contact">
-  <div>
-    <div class="section-label">Contact</div>
-    <h2 class="contact-heading">Let's build<br>something<br><em>cosmic</em></h2>
-    <p class="contact-subtext">Whether you have a clear vision or just a feeling — we'd love to hear from you. Every great project starts with a conversation.</p>
-  </div>
-  <form class="contact-form" onsubmit="return false;">
-    <div class="form-field">
-      <label class="form-label">Your name</label>
-      <input type="text" class="form-input" placeholder="Jane Doe">
-    </div>
-    <div class="form-field">
-      <label class="form-label">Email address</label>
-      <input type="email" class="form-input" placeholder="jane@studio.com">
-    </div>
-    <div class="form-field">
-      <label class="form-label">About the project</label>
-      <textarea class="form-input" placeholder="Tell us about your universe..."></textarea>
-    </div>
-    <button class="form-submit">
-      Send message <span style="font-size:1rem;">→</span>
-    </button>
-  </form>
-</section>
+    <footer>
+        <span class="footer-logo">Troverse</span>
+        <ul class="footer-links">
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">Behance</a></li>
+            <li><a href="#">LinkedIn</a></li>
+        </ul>
+        <span class="footer-copy">© 2026 Troverse Studio</span>
+    </footer>
 
-<footer>
-  <span class="footer-logo">Troverse</span>
-  <ul class="footer-links">
-    <li><a href="#">Instagram</a></li>
-    <li><a href="#">Behance</a></li>
-    <li><a href="#">LinkedIn</a></li>
-  </ul>
-  <span class="footer-copy">© 2026 Troverse Studio</span>
-</footer>
-
-<script>
-// Cursor
-const cursor = document.getElementById('cursor');
-const ring = document.getElementById('cursor-ring');
-let mx = 0, my = 0, rx = 0, ry = 0;
-document.addEventListener('mousemove', e => {
-  mx = e.clientX; my = e.clientY;
-  cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
-});
-function animateRing() {
-  rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
-  ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
-  requestAnimationFrame(animateRing);
-}
-animateRing();
-document.querySelectorAll('a,button,.tag').forEach(el => {
-  el.addEventListener('mouseenter', () => { ring.style.width='52px'; ring.style.height='52px'; ring.style.borderColor='rgba(200,184,154,0.6)'; });
-  el.addEventListener('mouseleave', () => { ring.style.width='32px'; ring.style.height='32px'; ring.style.borderColor='rgba(232,228,220,0.4)'; });
-});
-
-// GALAXY canvas
-(function() {
-  const canvas = document.getElementById('galaxy-canvas');
-  const ctx = canvas.getContext('2d');
-  let W, H, stars=[], dustClouds=[], frame=0;
-
-  function resize() {
-    W = canvas.width = window.innerWidth;
-    H = canvas.height = window.innerHeight;
-    initStars();
-  }
-
-  function initStars() {
-    stars = [];
-    dustClouds = [];
-    // Background stars
-    for (let i = 0; i < 800; i++) {
-      stars.push({
-        x: Math.random() * W,
-        y: Math.random() * H,
-        r: Math.random() * 1.2,
-        twinkle: Math.random() * Math.PI * 2,
-        speed: 0.01 + Math.random() * 0.03,
-        brightness: 0.3 + Math.random() * 0.7
-      });
-    }
-    // Galaxy spiral arms
-    const cx = W * 0.5, cy = H * 0.5;
-    const galW = Math.min(W, H) * 0.85;
-    for (let arm = 0; arm < 3; arm++) {
-      const armOffset = (arm / 3) * Math.PI * 2;
-      for (let i = 0; i < 500; i++) {
-        const t = i / 500;
-        const angle = t * Math.PI * 5 + armOffset;
-        const r = t * galW * 0.5;
-        const spread = galW * 0.06 * t;
-        const x = cx + Math.cos(angle) * r + (Math.random() - 0.5) * spread;
-        const y = cy + Math.sin(angle) * r * 0.4 + (Math.random() - 0.5) * spread * 0.4;
-        stars.push({
-          x, y,
-          r: Math.random() * 1.8,
-          twinkle: Math.random() * Math.PI * 2,
-          speed: 0.008 + Math.random() * 0.02,
-          brightness: 0.5 + Math.random() * 0.5,
-          galaxy: true
+    <script>
+        // Cursor
+        const cursor = document.getElementById('cursor');
+        const ring = document.getElementById('cursor-ring');
+        let mx = 0, my = 0, rx = 0, ry = 0;
+        document.addEventListener('mousemove', e => {
+            mx = e.clientX; my = e.clientY;
+            cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
         });
-      }
-    }
-    // Core glow stars
-    for (let i = 0; i < 200; i++) {
-      const angle = Math.random() * Math.PI * 2;
-      const r = Math.pow(Math.random(), 2) * galW * 0.18;
-      stars.push({
-        x: cx + Math.cos(angle) * r,
-        y: cy + Math.sin(angle) * r * 0.4,
-        r: Math.random() * 2.5 + 0.5,
-        twinkle: Math.random() * Math.PI * 2,
-        speed: 0.015 + Math.random() * 0.04,
-        brightness: 0.8 + Math.random() * 0.2,
-        core: true
-      });
-    }
-    // Dust / nebula blobs
-    for (let i = 0; i < 8; i++) {
-      const angle = Math.random() * Math.PI * 2;
-      const r = Math.random() * galW * 0.35;
-      dustClouds.push({
-        x: cx + Math.cos(angle) * r,
-        y: cy + Math.sin(angle) * r * 0.4,
-        radius: galW * (0.08 + Math.random() * 0.12),
-        color: ['rgba(100,80,180,', 'rgba(60,40,120,', 'rgba(180,140,80,', 'rgba(40,60,100,'][Math.floor(Math.random()*4)],
-        alpha: 0.03 + Math.random() * 0.05
-      });
-    }
-  }
+        function animateRing() {
+            rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+            ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+            requestAnimationFrame(animateRing);
+        }
+        animateRing();
+        document.querySelectorAll('a,button,.tag').forEach(el => {
+            el.addEventListener('mouseenter', () => { ring.style.width = '52px'; ring.style.height = '52px'; ring.style.borderColor = 'rgba(200,184,154,0.6)'; });
+            el.addEventListener('mouseleave', () => { ring.style.width = '32px'; ring.style.height = '32px'; ring.style.borderColor = 'rgba(232,228,220,0.4)'; });
+        });
 
-  function draw() {
-    ctx.clearRect(0, 0, W, H);
+        // GALAXY canvas
+        (function () {
+            const canvas = document.getElementById('galaxy-canvas');
+            const ctx = canvas.getContext('2d');
+            let W, H, stars = [], dustClouds = [], frame = 0;
 
-    // Deep space gradient
-    const bg = ctx.createRadialGradient(W*0.5, H*0.5, 0, W*0.5, H*0.5, Math.max(W,H)*0.7);
-    bg.addColorStop(0, 'rgba(12,8,25,1)');
-    bg.addColorStop(0.4, 'rgba(4,4,12,1)');
-    bg.addColorStop(1, 'rgba(0,0,0,1)');
-    ctx.fillStyle = bg;
-    ctx.fillRect(0, 0, W, H);
+            function resize() {
+                W = canvas.width = window.innerWidth;
+                H = canvas.height = window.innerHeight;
+                initStars();
+            }
 
-    // Galaxy core glow
-    const coreGrad = ctx.createRadialGradient(W*0.5, H*0.5, 0, W*0.5, H*0.5, Math.min(W,H)*0.25);
-    coreGrad.addColorStop(0, 'rgba(200,160,100,0.12)');
-    coreGrad.addColorStop(0.3, 'rgba(120,80,160,0.06)');
-    coreGrad.addColorStop(1, 'transparent');
-    ctx.fillStyle = coreGrad;
-    ctx.fillRect(0, 0, W, H);
+            function initStars() {
+                stars = [];
+                dustClouds = [];
+                // Background stars
+                for (let i = 0; i < 800; i++) {
+                    stars.push({
+                        x: Math.random() * W,
+                        y: Math.random() * H,
+                        r: Math.random() * 1.2,
+                        twinkle: Math.random() * Math.PI * 2,
+                        speed: 0.01 + Math.random() * 0.03,
+                        brightness: 0.3 + Math.random() * 0.7
+                    });
+                }
+                // Galaxy spiral arms
+                const cx = W * 0.5, cy = H * 0.5;
+                const galW = Math.min(W, H) * 0.85;
+                for (let arm = 0; arm < 3; arm++) {
+                    const armOffset = (arm / 3) * Math.PI * 2;
+                    for (let i = 0; i < 500; i++) {
+                        const t = i / 500;
+                        const angle = t * Math.PI * 5 + armOffset;
+                        const r = t * galW * 0.5;
+                        const spread = galW * 0.06 * t;
+                        const x = cx + Math.cos(angle) * r + (Math.random() - 0.5) * spread;
+                        const y = cy + Math.sin(angle) * r * 0.4 + (Math.random() - 0.5) * spread * 0.4;
+                        stars.push({
+                            x, y,
+                            r: Math.random() * 1.8,
+                            twinkle: Math.random() * Math.PI * 2,
+                            speed: 0.008 + Math.random() * 0.02,
+                            brightness: 0.5 + Math.random() * 0.5,
+                            galaxy: true
+                        });
+                    }
+                }
+                // Core glow stars
+                for (let i = 0; i < 200; i++) {
+                    const angle = Math.random() * Math.PI * 2;
+                    const r = Math.pow(Math.random(), 2) * galW * 0.18;
+                    stars.push({
+                        x: cx + Math.cos(angle) * r,
+                        y: cy + Math.sin(angle) * r * 0.4,
+                        r: Math.random() * 2.5 + 0.5,
+                        twinkle: Math.random() * Math.PI * 2,
+                        speed: 0.015 + Math.random() * 0.04,
+                        brightness: 0.8 + Math.random() * 0.2,
+                        core: true
+                    });
+                }
+                // Dust / nebula blobs
+                for (let i = 0; i < 8; i++) {
+                    const angle = Math.random() * Math.PI * 2;
+                    const r = Math.random() * galW * 0.35;
+                    dustClouds.push({
+                        x: cx + Math.cos(angle) * r,
+                        y: cy + Math.sin(angle) * r * 0.4,
+                        radius: galW * (0.08 + Math.random() * 0.12),
+                        color: ['rgba(100,80,180,', 'rgba(60,40,120,', 'rgba(180,140,80,', 'rgba(40,60,100,'][Math.floor(Math.random() * 4)],
+                        alpha: 0.03 + Math.random() * 0.05
+                    });
+                }
+            }
 
-    // Dust clouds
-    dustClouds.forEach(d => {
-      const g = ctx.createRadialGradient(d.x, d.y, 0, d.x, d.y, d.radius);
-      g.addColorStop(0, d.color + d.alpha + ')');
-      g.addColorStop(1, d.color + '0)');
-      ctx.fillStyle = g;
-      ctx.beginPath();
-      ctx.ellipse(d.x, d.y, d.radius, d.radius * 0.45, 0.3, 0, Math.PI * 2);
-      ctx.fill();
-    });
+            function draw() {
+                ctx.clearRect(0, 0, W, H);
 
-    // Stars
-    frame++;
-    stars.forEach(s => {
-      s.twinkle += s.speed;
-      const alpha = s.brightness * (0.6 + 0.4 * Math.sin(s.twinkle));
-      ctx.globalAlpha = alpha;
-      if (s.core) {
-        const g = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.r * 3);
-        g.addColorStop(0, 'rgba(255,240,200,1)');
-        g.addColorStop(0.4, 'rgba(255,220,150,0.4)');
-        g.addColorStop(1, 'transparent');
-        ctx.fillStyle = g;
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.r * 3, 0, Math.PI * 2);
-        ctx.fill();
-      } else {
-        ctx.fillStyle = s.galaxy ? 'rgba(220,210,255,1)' : 'rgba(255,255,255,1)';
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    });
-    ctx.globalAlpha = 1;
-    requestAnimationFrame(draw);
-  }
+                // Deep space gradient
+                const bg = ctx.createRadialGradient(W * 0.5, H * 0.5, 0, W * 0.5, H * 0.5, Math.max(W, H) * 0.7);
+                bg.addColorStop(0, 'rgba(12,8,25,1)');
+                bg.addColorStop(0.4, 'rgba(4,4,12,1)');
+                bg.addColorStop(1, 'rgba(0,0,0,1)');
+                ctx.fillStyle = bg;
+                ctx.fillRect(0, 0, W, H);
 
-  window.addEventListener('resize', resize);
-  resize();
-  draw();
-})();
+                // Galaxy core glow
+                const coreGrad = ctx.createRadialGradient(W * 0.5, H * 0.5, 0, W * 0.5, H * 0.5, Math.min(W, H) * 0.25);
+                coreGrad.addColorStop(0, 'rgba(200,160,100,0.12)');
+                coreGrad.addColorStop(0.3, 'rgba(120,80,160,0.06)');
+                coreGrad.addColorStop(1, 'transparent');
+                ctx.fillStyle = coreGrad;
+                ctx.fillRect(0, 0, W, H);
 
-// PLANETS
-const planetConfigs = [
-  {
-    id: 'planet1',
-    baseColor: [60, 80, 180],
-    ringColor: 'rgba(100,130,220,',
-    hasRing: true,
-    bandColors: ['rgba(40,60,150,1)','rgba(70,100,200,1)','rgba(55,75,170,1)','rgba(80,110,210,1)'],
-    glowColor: 'rgba(80,100,200,0.25)',
-    atmosphereColor: 'rgba(60,80,180,0.5)',
-    lightDir: { x: -0.5, y: -0.5 }
-  },
-  {
-    id: 'planet2',
-    baseColor: [180, 100, 40],
-    ringColor: 'rgba(200,150,80,',
-    hasRing: true,
-    bandColors: ['rgba(160,80,30,1)','rgba(200,120,50,1)','rgba(170,90,35,1)','rgba(210,130,55,1)'],
-    glowColor: 'rgba(200,120,50,0.25)',
-    atmosphereColor: 'rgba(200,100,40,0.5)',
-    lightDir: { x: 0.5, y: -0.4 }
-  },
-  {
-    id: 'planet3',
-    baseColor: [60, 160, 120],
-    ringColor: 'rgba(80,180,140,',
-    hasRing: false,
-    bandColors: ['rgba(40,140,100,1)','rgba(70,180,130,1)','rgba(50,155,115,1)','rgba(75,185,135,1)'],
-    glowColor: 'rgba(60,180,120,0.25)',
-    atmosphereColor: 'rgba(60,180,120,0.5)',
-    lightDir: { x: -0.3, y: -0.6 }
-  },
-  {
-    id: 'planet4',
-    baseColor: [160, 60, 60],
-    ringColor: 'rgba(200,100,80,',
-    hasRing: true,
-    bandColors: ['rgba(140,40,40,1)','rgba(180,70,60,1)','rgba(150,50,50,1)','rgba(185,75,65,1)'],
-    glowColor: 'rgba(180,60,60,0.25)',
-    atmosphereColor: 'rgba(180,60,60,0.5)',
-    lightDir: { x: 0.4, y: -0.5 }
-  }
-];
+                // Dust clouds
+                dustClouds.forEach(d => {
+                    const g = ctx.createRadialGradient(d.x, d.y, 0, d.x, d.y, d.radius);
+                    g.addColorStop(0, d.color + d.alpha + ')');
+                    g.addColorStop(1, d.color + '0)');
+                    ctx.fillStyle = g;
+                    ctx.beginPath();
+                    ctx.ellipse(d.x, d.y, d.radius, d.radius * 0.45, 0.3, 0, Math.PI * 2);
+                    ctx.fill();
+                });
 
-function drawPlanet(cfg) {
-  const canvas = document.getElementById(cfg.id);
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  const W = canvas.width, H = canvas.height;
-  const cx = W / 2, cy = H / 2;
-  const R = W * 0.3;
-  let t = 0;
+                // Stars
+                frame++;
+                stars.forEach(s => {
+                    s.twinkle += s.speed;
+                    const alpha = s.brightness * (0.6 + 0.4 * Math.sin(s.twinkle));
+                    ctx.globalAlpha = alpha;
+                    if (s.core) {
+                        const g = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.r * 3);
+                        g.addColorStop(0, 'rgba(255,240,200,1)');
+                        g.addColorStop(0.4, 'rgba(255,220,150,0.4)');
+                        g.addColorStop(1, 'transparent');
+                        ctx.fillStyle = g;
+                        ctx.beginPath();
+                        ctx.arc(s.x, s.y, s.r * 3, 0, Math.PI * 2);
+                        ctx.fill();
+                    } else {
+                        ctx.fillStyle = s.galaxy ? 'rgba(220,210,255,1)' : 'rgba(255,255,255,1)';
+                        ctx.beginPath();
+                        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                });
+                ctx.globalAlpha = 1;
+                requestAnimationFrame(draw);
+            }
 
-  function render() {
-    ctx.clearRect(0, 0, W, H);
-    t += 0.004;
+            window.addEventListener('resize', resize);
+            resize();
+            draw();
+        })();
 
-    // Ambient glow
-    const glow = ctx.createRadialGradient(cx, cy, R*0.5, cx, cy, R*1.8);
-    glow.addColorStop(0, cfg.glowColor);
-    glow.addColorStop(1, 'transparent');
-    ctx.fillStyle = glow;
-    ctx.fillRect(0, 0, W, H);
+        // PLANETS
+        const planetConfigs = [
+            {
+                id: 'planet1',
+                baseColor: [60, 80, 180],
+                ringColor: 'rgba(100,130,220,',
+                hasRing: true,
+                bandColors: ['rgba(40,60,150,1)', 'rgba(70,100,200,1)', 'rgba(55,75,170,1)', 'rgba(80,110,210,1)'],
+                glowColor: 'rgba(80,100,200,0.25)',
+                atmosphereColor: 'rgba(60,80,180,0.5)',
+                lightDir: { x: -0.5, y: -0.5 }
+            },
+            {
+                id: 'planet2',
+                baseColor: [180, 100, 40],
+                ringColor: 'rgba(200,150,80,',
+                hasRing: true,
+                bandColors: ['rgba(160,80,30,1)', 'rgba(200,120,50,1)', 'rgba(170,90,35,1)', 'rgba(210,130,55,1)'],
+                glowColor: 'rgba(200,120,50,0.25)',
+                atmosphereColor: 'rgba(200,100,40,0.5)',
+                lightDir: { x: 0.5, y: -0.4 }
+            },
+            {
+                id: 'planet3',
+                baseColor: [60, 160, 120],
+                ringColor: 'rgba(80,180,140,',
+                hasRing: false,
+                bandColors: ['rgba(40,140,100,1)', 'rgba(70,180,130,1)', 'rgba(50,155,115,1)', 'rgba(75,185,135,1)'],
+                glowColor: 'rgba(60,180,120,0.25)',
+                atmosphereColor: 'rgba(60,180,120,0.5)',
+                lightDir: { x: -0.3, y: -0.6 }
+            },
+            {
+                id: 'planet4',
+                baseColor: [160, 60, 60],
+                ringColor: 'rgba(200,100,80,',
+                hasRing: true,
+                bandColors: ['rgba(140,40,40,1)', 'rgba(180,70,60,1)', 'rgba(150,50,50,1)', 'rgba(185,75,65,1)'],
+                glowColor: 'rgba(180,60,60,0.25)',
+                atmosphereColor: 'rgba(180,60,60,0.5)',
+                lightDir: { x: 0.4, y: -0.5 }
+            }
+        ];
 
-    // Ring behind planet
-    if (cfg.hasRing) {
-      ctx.save();
-      ctx.translate(cx, cy);
-      ctx.scale(1, 0.28);
-      const ringR1 = R * 1.45, ringR2 = R * 2.1;
-      const ringGrad = ctx.createRadialGradient(0, 0, ringR1, 0, 0, ringR2);
-      ringGrad.addColorStop(0, cfg.ringColor + '0.5)');
-      ringGrad.addColorStop(0.4, cfg.ringColor + '0.35)');
-      ringGrad.addColorStop(0.7, cfg.ringColor + '0.15)');
-      ringGrad.addColorStop(1, cfg.ringColor + '0)');
-      ctx.fillStyle = ringGrad;
-      ctx.beginPath();
-      ctx.arc(0, 0, ringR2, 0, Math.PI * 2);
-      ctx.arc(0, 0, ringR1, Math.PI * 2, 0, true);
-      ctx.fill();
-      ctx.restore();
-    }
+        function drawPlanet(cfg) {
+            const canvas = document.getElementById(cfg.id);
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const W = canvas.width, H = canvas.height;
+            const cx = W / 2, cy = H / 2;
+            const R = W * 0.3;
+            let t = 0;
 
-    // Planet body
-    ctx.save();
-    ctx.beginPath();
-    ctx.arc(cx, cy, R, 0, Math.PI * 2);
-    ctx.clip();
+            function render() {
+                ctx.clearRect(0, 0, W, H);
+                t += 0.004;
 
-    // Base sphere gradient
-    const sphereGrad = ctx.createRadialGradient(
-      cx + cfg.lightDir.x * R * 0.6,
-      cy + cfg.lightDir.y * R * 0.6,
-      R * 0.05,
-      cx, cy, R
-    );
-    const [r, g, b] = cfg.baseColor;
-    sphereGrad.addColorStop(0, `rgba(${Math.min(r+80,255)},${Math.min(g+80,255)},${Math.min(b+80,255)},1)`);
-    sphereGrad.addColorStop(0.4, `rgba(${r},${g},${b},1)`);
-    sphereGrad.addColorStop(1, `rgba(${Math.max(r-60,0)},${Math.max(g-60,0)},${Math.max(b-60,0)},1)`);
-    ctx.fillStyle = sphereGrad;
-    ctx.fillRect(cx-R, cy-R, R*2, R*2);
+                // Ambient glow
+                const glow = ctx.createRadialGradient(cx, cy, R * 0.5, cx, cy, R * 1.8);
+                glow.addColorStop(0, cfg.glowColor);
+                glow.addColorStop(1, 'transparent');
+                ctx.fillStyle = glow;
+                ctx.fillRect(0, 0, W, H);
 
-    // Cloud bands
-    cfg.bandColors.forEach((color, i) => {
-      const bandY = cy - R + (i + 0.5) * (R * 2 / (cfg.bandColors.length + 1));
-      const bandH = R * 0.12;
-      const wave = Math.sin(t * 0.7 + i * 1.3) * 4;
-      ctx.fillStyle = color;
-      ctx.globalAlpha = 0.35 + Math.sin(t + i) * 0.05;
-      ctx.beginPath();
-      for (let x = cx - R; x <= cx + R; x += 4) {
-        const localWave = Math.sin((x - cx) * 0.025 + t * (i % 2 ? 1 : -1)) * 6;
-        ctx.rect(x, bandY + wave + localWave - bandH/2, 4, bandH);
-      }
-      ctx.fill();
-      ctx.globalAlpha = 1;
-    });
+                // Ring behind planet
+                if (cfg.hasRing) {
+                    ctx.save();
+                    ctx.translate(cx, cy);
+                    ctx.scale(1, 0.28);
+                    const ringR1 = R * 1.45, ringR2 = R * 2.1;
+                    const ringGrad = ctx.createRadialGradient(0, 0, ringR1, 0, 0, ringR2);
+                    ringGrad.addColorStop(0, cfg.ringColor + '0.5)');
+                    ringGrad.addColorStop(0.4, cfg.ringColor + '0.35)');
+                    ringGrad.addColorStop(0.7, cfg.ringColor + '0.15)');
+                    ringGrad.addColorStop(1, cfg.ringColor + '0)');
+                    ctx.fillStyle = ringGrad;
+                    ctx.beginPath();
+                    ctx.arc(0, 0, ringR2, 0, Math.PI * 2);
+                    ctx.arc(0, 0, ringR1, Math.PI * 2, 0, true);
+                    ctx.fill();
+                    ctx.restore();
+                }
 
-    // Atmosphere shimmer
-    const atmGrad = ctx.createRadialGradient(cx, cy, R*0.7, cx, cy, R);
-    atmGrad.addColorStop(0, 'transparent');
-    atmGrad.addColorStop(1, cfg.atmosphereColor);
-    ctx.fillStyle = atmGrad;
-    ctx.globalAlpha = 0.3;
-    ctx.fillRect(cx-R, cy-R, R*2, R*2);
-    ctx.globalAlpha = 1;
+                // Planet body
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(cx, cy, R, 0, Math.PI * 2);
+                ctx.clip();
 
-    // Shadow side
-    const shadowAngle = Math.atan2(-cfg.lightDir.y, -cfg.lightDir.x);
-    const shadowGrad = ctx.createRadialGradient(
-      cx + Math.cos(shadowAngle) * R * 0.6,
-      cy + Math.sin(shadowAngle) * R * 0.6,
-      0,
-      cx + Math.cos(shadowAngle) * R * 0.4,
-      cy + Math.sin(shadowAngle) * R * 0.4,
-      R * 1.1
-    );
-    shadowGrad.addColorStop(0, 'transparent');
-    shadowGrad.addColorStop(0.5, 'rgba(0,0,0,0.2)');
-    shadowGrad.addColorStop(1, 'rgba(0,0,0,0.75)');
-    ctx.fillStyle = shadowGrad;
-    ctx.fillRect(cx-R, cy-R, R*2, R*2);
+                // Base sphere gradient
+                const sphereGrad = ctx.createRadialGradient(
+                    cx + cfg.lightDir.x * R * 0.6,
+                    cy + cfg.lightDir.y * R * 0.6,
+                    R * 0.05,
+                    cx, cy, R
+                );
+                const [r, g, b] = cfg.baseColor;
+                sphereGrad.addColorStop(0, `rgba(${Math.min(r + 80, 255)},${Math.min(g + 80, 255)},${Math.min(b + 80, 255)},1)`);
+                sphereGrad.addColorStop(0.4, `rgba(${r},${g},${b},1)`);
+                sphereGrad.addColorStop(1, `rgba(${Math.max(r - 60, 0)},${Math.max(g - 60, 0)},${Math.max(b - 60, 0)},1)`);
+                ctx.fillStyle = sphereGrad;
+                ctx.fillRect(cx - R, cy - R, R * 2, R * 2);
 
-    // Specular highlight
-    const specGrad = ctx.createRadialGradient(
-      cx + cfg.lightDir.x * R * 0.55,
-      cy + cfg.lightDir.y * R * 0.55,
-      0,
-      cx + cfg.lightDir.x * R * 0.55,
-      cy + cfg.lightDir.y * R * 0.55,
-      R * 0.45
-    );
-    specGrad.addColorStop(0, 'rgba(255,255,255,0.18)');
-    specGrad.addColorStop(1, 'transparent');
-    ctx.fillStyle = specGrad;
-    ctx.fillRect(cx-R, cy-R, R*2, R*2);
+                // Cloud bands
+                cfg.bandColors.forEach((color, i) => {
+                    const bandY = cy - R + (i + 0.5) * (R * 2 / (cfg.bandColors.length + 1));
+                    const bandH = R * 0.12;
+                    const wave = Math.sin(t * 0.7 + i * 1.3) * 4;
+                    ctx.fillStyle = color;
+                    ctx.globalAlpha = 0.35 + Math.sin(t + i) * 0.05;
+                    ctx.beginPath();
+                    for (let x = cx - R; x <= cx + R; x += 4) {
+                        const localWave = Math.sin((x - cx) * 0.025 + t * (i % 2 ? 1 : -1)) * 6;
+                        ctx.rect(x, bandY + wave + localWave - bandH / 2, 4, bandH);
+                    }
+                    ctx.fill();
+                    ctx.globalAlpha = 1;
+                });
 
-    ctx.restore();
+                // Atmosphere shimmer
+                const atmGrad = ctx.createRadialGradient(cx, cy, R * 0.7, cx, cy, R);
+                atmGrad.addColorStop(0, 'transparent');
+                atmGrad.addColorStop(1, cfg.atmosphereColor);
+                ctx.fillStyle = atmGrad;
+                ctx.globalAlpha = 0.3;
+                ctx.fillRect(cx - R, cy - R, R * 2, R * 2);
+                ctx.globalAlpha = 1;
 
-    // Ring in front
-    if (cfg.hasRing) {
-      ctx.save();
-      ctx.translate(cx, cy);
-      ctx.scale(1, 0.28);
-      const ringR1 = R * 1.45, ringR2 = R * 2.1;
-      ctx.beginPath();
-      ctx.arc(0, 0, ringR2, Math.PI, Math.PI * 2);
-      ctx.arc(0, 0, ringR1, Math.PI * 2, Math.PI, true);
-      ctx.closePath();
-      const ringGrad2 = ctx.createRadialGradient(0, 0, ringR1, 0, 0, ringR2);
-      ringGrad2.addColorStop(0, cfg.ringColor + '0.6)');
-      ringGrad2.addColorStop(0.5, cfg.ringColor + '0.4)');
-      ringGrad2.addColorStop(1, cfg.ringColor + '0)');
-      ctx.fillStyle = ringGrad2;
-      ctx.fill();
-      ctx.restore();
-    }
+                // Shadow side
+                const shadowAngle = Math.atan2(-cfg.lightDir.y, -cfg.lightDir.x);
+                const shadowGrad = ctx.createRadialGradient(
+                    cx + Math.cos(shadowAngle) * R * 0.6,
+                    cy + Math.sin(shadowAngle) * R * 0.6,
+                    0,
+                    cx + Math.cos(shadowAngle) * R * 0.4,
+                    cy + Math.sin(shadowAngle) * R * 0.4,
+                    R * 1.1
+                );
+                shadowGrad.addColorStop(0, 'transparent');
+                shadowGrad.addColorStop(0.5, 'rgba(0,0,0,0.2)');
+                shadowGrad.addColorStop(1, 'rgba(0,0,0,0.75)');
+                ctx.fillStyle = shadowGrad;
+                ctx.fillRect(cx - R, cy - R, R * 2, R * 2);
 
-    // Atmosphere rim glow
-    const rimGrad = ctx.createRadialGradient(cx, cy, R * 0.92, cx, cy, R * 1.12);
-    rimGrad.addColorStop(0, 'transparent');
-    rimGrad.addColorStop(0.5, cfg.atmosphereColor.replace('0.5','0.15'));
-    rimGrad.addColorStop(1, 'transparent');
-    ctx.fillStyle = rimGrad;
-    ctx.beginPath();
-    ctx.arc(cx, cy, R * 1.12, 0, Math.PI * 2);
-    ctx.arc(cx, cy, R * 0.92, Math.PI * 2, 0, true);
-    ctx.fill();
+                // Specular highlight
+                const specGrad = ctx.createRadialGradient(
+                    cx + cfg.lightDir.x * R * 0.55,
+                    cy + cfg.lightDir.y * R * 0.55,
+                    0,
+                    cx + cfg.lightDir.x * R * 0.55,
+                    cy + cfg.lightDir.y * R * 0.55,
+                    R * 0.45
+                );
+                specGrad.addColorStop(0, 'rgba(255,255,255,0.18)');
+                specGrad.addColorStop(1, 'transparent');
+                ctx.fillStyle = specGrad;
+                ctx.fillRect(cx - R, cy - R, R * 2, R * 2);
 
-    requestAnimationFrame(render);
-  }
-  render();
-}
+                ctx.restore();
 
-planetConfigs.forEach(drawPlanet);
+                // Ring in front
+                if (cfg.hasRing) {
+                    ctx.save();
+                    ctx.translate(cx, cy);
+                    ctx.scale(1, 0.28);
+                    const ringR1 = R * 1.45, ringR2 = R * 2.1;
+                    ctx.beginPath();
+                    ctx.arc(0, 0, ringR2, Math.PI, Math.PI * 2);
+                    ctx.arc(0, 0, ringR1, Math.PI * 2, Math.PI, true);
+                    ctx.closePath();
+                    const ringGrad2 = ctx.createRadialGradient(0, 0, ringR1, 0, 0, ringR2);
+                    ringGrad2.addColorStop(0, cfg.ringColor + '0.6)');
+                    ringGrad2.addColorStop(0.5, cfg.ringColor + '0.4)');
+                    ringGrad2.addColorStop(1, cfg.ringColor + '0)');
+                    ctx.fillStyle = ringGrad2;
+                    ctx.fill();
+                    ctx.restore();
+                }
 
-// Scroll reveal
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) e.target.classList.add('visible');
-  });
-}, { threshold: 0.15 });
-document.querySelectorAll('.planet-project').forEach(el => observer.observe(el));
-</script>
+                // Atmosphere rim glow
+                const rimGrad = ctx.createRadialGradient(cx, cy, R * 0.92, cx, cy, R * 1.12);
+                rimGrad.addColorStop(0, 'transparent');
+                rimGrad.addColorStop(0.5, cfg.atmosphereColor.replace('0.5', '0.15'));
+                rimGrad.addColorStop(1, 'transparent');
+                ctx.fillStyle = rimGrad;
+                ctx.beginPath();
+                ctx.arc(cx, cy, R * 1.12, 0, Math.PI * 2);
+                ctx.arc(cx, cy, R * 0.92, Math.PI * 2, 0, true);
+                ctx.fill();
+
+                requestAnimationFrame(render);
+            }
+            render();
+        }
+
+        planetConfigs.forEach(drawPlanet);
+
+        // Scroll reveal — planet projects
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) e.target.classList.add('visible');
+            });
+        }, { threshold: 0.15 });
+        document.querySelectorAll('.planet-project').forEach(el => observer.observe(el));
+
+        // ── Scroll-reveal for About & Contact ──
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+        document.querySelectorAll('#about .reveal, #contact .reveal').forEach(el => {
+            revealObserver.observe(el);
+        });
+
+        // ── Stat number count-up ──
+        function animateCount(el, target, duration = 1200) {
+            const isSymbol = isNaN(parseInt(target));
+            if (isSymbol) return;
+            const end = parseInt(target);
+            const startTime = performance.now();
+            function step(now) {
+                const elapsed = now - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                // ease out cubic
+                const eased = 1 - Math.pow(1 - progress, 3);
+                el.textContent = String(Math.round(eased * end)).padStart(2, '0');
+                if (progress < 1) requestAnimationFrame(step);
+            }
+            requestAnimationFrame(step);
+        }
+
+        const statObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const numEl = entry.target.querySelector('.stat-num[data-target]');
+                    if (numEl) {
+                        numEl.classList.add('counted');
+                        animateCount(numEl, numEl.dataset.target);
+                    }
+                    statObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.4 });
+
+        document.querySelectorAll('.about-stats > div').forEach(el => {
+            statObserver.observe(el);
+        });
+    </script>
 </body>
+
 </html>
