@@ -913,6 +913,7 @@
             top: -10px;
             left: -15px;
         }
+
         .project-planet-icon {
             position: relative;
             top: -5px;
@@ -926,8 +927,8 @@
             right: 2.5rem;
             width: 48px;
             height: 48px;
-            background: rgba(14,14,14,0.85);
-            border: 1px solid rgba(200,184,154,0.35);
+            background: rgba(14, 14, 14, 0.85);
+            border: 1px solid rgba(200, 184, 154, 0.35);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -940,15 +941,18 @@
             pointer-events: none;
             backdrop-filter: blur(8px);
         }
+
         #back-to-top.visible {
             opacity: 1;
             transform: translateY(0);
             pointer-events: auto;
         }
+
         #back-to-top:hover {
-            background: rgba(184,154,106,0.9);
+            background: rgba(184, 154, 106, 0.9);
             border-color: transparent;
         }
+
         #back-to-top svg {
             width: 16px;
             height: 16px;
@@ -959,17 +963,404 @@
             stroke-linejoin: round;
             transition: transform 0.3s ease;
         }
+
         #back-to-top:hover svg {
             transform: translateY(-2px);
+        }
+
+        /* ═══════════════════════════════
+           INTRO LOADER
+        ═══════════════════════════════ */
+        #intro-loader {
+            position: fixed;
+            inset: 0;
+            background: #060608;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* Stars background */
+        #intro-loader .loader-stars {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        /* ── Phase 1: spinner ── */
+        .loader-phase-1 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .loader-phase-1.hide {
+            opacity: 0;
+            transform: scale(0.9);
+            pointer-events: none;
+        }
+
+
+        .spinner-wrap {
+            position: relative;
+            width: 200px;
+            height: 200px;
+        }
+
+        .spinner-ring {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            animation: spinRing 1.6s linear infinite;
+        }
+
+        .spinner-ring:nth-child(1) {
+            border-top-color: #c8b89a;
+            animation-duration: 1.6s;
+        }
+
+        .spinner-ring:nth-child(2) {
+            inset: 22px;
+            border-top-color: rgba(200, 184, 154, 0.4);
+            animation-duration: 2.4s;
+            animation-direction: reverse;
+        }
+
+        .spinner-ring:nth-child(3) {
+            inset: 50px;
+            border-top-color: rgba(200, 184, 154, 0.2);
+            animation-duration: 1.2s;
+        }
+
+        .spinner-dot {
+            position: absolute;
+            inset: 82px;
+            background: #c8b89a;
+            border-radius: 50%;
+            animation: spinDotPulse 1.6s ease-in-out infinite;
+        }
+
+        @keyframes spinRing {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spinDotPulse {
+
+            0%,
+            100% {
+                opacity: 0.4;
+                transform: scale(0.8);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.1);
+            }
+        }
+
+        .loader-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.55em;
+            text-transform: uppercase;
+            color: rgba(200, 184, 154, 0.6);
+            animation: loaderLabelPulse 1.6s ease-in-out infinite;
+        }
+
+        @keyframes loaderLabelPulse {
+
+            0%,
+            100% {
+                opacity: 0.4;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* ── Phase 2: ships ── */
+        .loader-phase-2 {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.8s ease;
+        }
+
+        .loader-phase-2.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .phase2-prompt {
+            font-size: 40px;
+            letter-spacing: 0.45em;
+            text-transform: uppercase;
+            color: rgba(232, 228, 220, 0.35);
+            margin-bottom: 3.5rem;
+            opacity: 0;
+            transform: translateY(8px);
+            transition: opacity 0.6s 0.4s ease, transform 0.6s 0.4s ease;
+        }
+
+        .loader-phase-2.show .phase2-prompt {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .ships-grid {
+            display: flex;
+            gap: 3.5rem;
+            align-items: flex-end;
+        }
+
+        /* individual ship card */
+        .ship-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.2rem;
+            cursor: zoom-in;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .loader-phase-2.show .ship-card:nth-child(1) {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.15s;
+        }
+
+        .loader-phase-2.show .ship-card:nth-child(2) {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.28s;
+        }
+
+        .loader-phase-2.show .ship-card:nth-child(3) {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.41s;
+        }
+
+        .loader-phase-2.show .ship-card:nth-child(4) {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.54s;
+        }
+
+        .ship-hitbox {
+            position: relative;
+            width: 120px;
+            height: 160px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            padding-bottom: 12px;
+            border: 1px solid rgba(200, 184, 154, 0);
+            border-radius: 4px;
+            transition: border-color 0.3s, background 0.3s;
+            animation: shipFloat var(--sf-dur, 7s) var(--sf-delay, 0s) ease-in-out infinite;
+        }
+
+        .ship-hitbox:hover {
+            border-color: rgba(200, 184, 154, 0.25);
+            background: rgba(200, 184, 154, 0.04);
+        }
+
+        @keyframes shipFloat {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* SVG planet on top of ship */
+        .ship-planet {
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 52px;
+            height: 52px;
+            animation: shipPlanetSpin 18s linear infinite;
+        }
+
+        @keyframes shipPlanetSpin {
+            to {
+                filter: hue-rotate(20deg);
+            }
+        }
+
+        /* SVG spaceship body */
+        .ship-svg {
+            width: 54px;
+            height: 80px;
+            transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), filter 0.4s;
+        }
+
+        .ship-hitbox:hover .ship-svg {
+            transform: translateY(-6px) scale(1.06);
+            filter: drop-shadow(0 0 12px var(--ship-color, #c8b89a));
+        }
+
+        /* Flame */
+        .ship-flame {
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 22px;
+            opacity: 0.7;
+            animation: flameFlicker 0.3s ease-in-out infinite alternate;
+        }
+
+        @keyframes flameFlicker {
+            from {
+                transform: translateX(-50%) scaleY(0.85) scaleX(0.9);
+                opacity: 0.6;
+            }
+
+            to {
+                transform: translateX(-50%) scaleY(1.1) scaleX(1.05);
+                opacity: 0.9;
+            }
+        }
+
+        /* hover: flame brightens */
+        .ship-hitbox:hover .ship-flame {
+            opacity: 1;
+        }
+
+        /* name label */
+        .ship-name {
+            font-size: 0.6rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: rgba(232, 228, 220, 0.5);
+            transition: color 0.3s;
+            text-align: center;
+        }
+
+        .ship-card:hover .ship-name {
+            color: var(--ship-color, #c8b89a);
+        }
+
+        /* ── Enter transition ── */
+        #intro-loader.exit {
+            animation: loaderExit 1s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+        }
+
+        @keyframes loaderExit {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            60% {
+                opacity: 1;
+                transform: scale(1.04);
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(1.12);
+                pointer-events: none;
+            }
+        }
+
+        /* prevent body scroll during loader */
+        body.loading {
+            overflow: hidden;
         }
     </style>
 </head>
 
 <body>
-
-    <button id="back-to-top" aria-label="Back to top"><svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg></button>
     <div class="cursor" id="cursor"></div>
     <div class="cursor-ring" id="cursor-ring"></div>
+
+    <!-- ═══ INTRO LOADER ═══ -->
+    <div id="intro-loader">
+        <canvas id="loader-stars-canvas"
+            style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;"></canvas>
+
+        <!-- Phase 1: spinner -->
+        <div class="loader-phase-1" id="loader-p1">
+            <div class="spinner-wrap">
+                <div class="spinner-ring"></div>
+                <div class="spinner-ring"></div>
+                <div class="spinner-ring"></div>
+                <div class="spinner-dot"></div>
+            </div>
+            <span class="loader-label">Entering the Troverse</span>
+        </div>
+
+        <!-- Phase 2: 4 ships -->
+        <div class="loader-phase-2" id="loader-p2">
+
+            <p class="phase2-prompt">Choose your vessel</p>
+            <div class="ships-grid">
+
+                <!-- Ship 1 — Blue / Nebula -->
+                <div class="ship-card" data-ship="1">
+                    <div class="ship-image-container">
+                        <img src="public/images/ship1.png" width="300px" height="150px" alt="Nebula">
+                    </div>
+                    <div class="ship-name">Nebula</div>
+                </div>
+                <!-- Ship 2 — Green / Solar -->
+                <div class="ship-card" data-ship="2">
+                    <div class="ship-image-container">
+                        <img src="public/images/ship2.png" width="300px" height="150px" alt="Solar">
+                    </div>
+                    <div class="ship-name">Solar</div>
+                </div>
+                <!-- Ship 3 — Red / Comet -->
+                <div class="ship-card" data-ship="3">
+                    <div class="ship-image-container">
+                        <img src="public/images/ship3.png" width="300px" height="150px" alt="Comet">
+                    </div>
+                    <div class="ship-name">Comet</div>
+                </div>
+                <!-- Ship 4 — Purple / Aurora -->
+                <div class="ship-card" data-ship="4">
+                    <div class="ship-image-container">
+                        <img src="public/images/ship4.png" width="300px" height="150px" alt="Aurora">
+                    </div>
+                    <div class="ship-name">Aurora</div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <!-- ═══ END INTRO LOADER ═══ -->
+
+    <button id="back-to-top" aria-label="Back to top"><svg viewBox="0 0 24 24">
+            <polyline points="18 15 12 9 6 15" />
+        </svg></button>
+
 
     <nav>
         <a href="#hero" class="nav-logo">Troverse
@@ -1078,7 +1469,7 @@
         <div class="planet-project" data-planet="1">
             <div class="planet-side">
                 <div class="planet-canvas-wrapper">
-                    <a href="#">
+                    <a href="https://trover204.github.io/volt17/">
                         <img src="public/images/planetblue.png" class="planet-img" alt="" width="500" height="500"
                             srcset="">
                     </a>
@@ -1112,7 +1503,7 @@
                         <circle cx="100" cy="85" r="2" fill="white" />
                     </svg>
                 </div>
-                <a href="#" class="project-link">
+                <a href="https://trover204.github.io/volt17/" class="project-link">
                     <span class="project-link-line"></span>
                     View case study
                 </a>
@@ -1123,7 +1514,9 @@
         <div class="planet-project" data-planet="2">
             <div class="planet-side">
                 <div class="planet-canvas-wrapper">
-                    <img src="public/images/planetred.png" class="planet-img" alt="" width="500" height="500" srcset="">
+                    <a href="https://chihai29.github.io/NguyenChiHai_23211TT046_prj4_fe1/">
+                        <img src="public/images/planetred.png" class="planet-img" alt="" width="500" height="500" srcset="">
+                    </a>
                 </div>
             </div>
             <div class="project-data">
@@ -1154,7 +1547,7 @@
                         <circle cx="100" cy="85" r="2" fill="white" />
                     </svg>
                 </div>
-                <a href="#" class="project-link">
+                <a href="https://chihai29.github.io/NguyenChiHai_23211TT046_prj4_fe1/" class="project-link">
                     <span class="project-link-line"></span>
                     View case study
                 </a>
@@ -1165,8 +1558,10 @@
         <div class="planet-project" data-planet="3">
             <div class="planet-side">
                 <div class="planet-canvas-wrapper">
-                    <img src="public/images/planetgreen.png" class="planet-img" alt="" width="500" height="500"
-                        srcset="">
+                    <a href="https://trover204.github.io/charitable/">
+                        <img src="public/images/planetgreen.png" class="planet-img" alt="" width="500" height="500"
+                            srcset="">
+                    </a>
                 </div>
             </div>
             <div class="project-data">
@@ -1197,7 +1592,7 @@
                         <circle cx="100" cy="85" r="2" fill="white" />
                     </svg>
                 </div>
-                <a href="#" class="project-link">
+                <a href="https://trover204.github.io/charitable/" class="project-link">
                     <span class="project-link-line"></span>
                     View case study
                 </a>
@@ -1208,8 +1603,10 @@
         <div class="planet-project" data-planet="4">
             <div class="planet-side">
                 <div class="planet-canvas-wrapper">
-                    <img src="public/images/planetpurple.png" class="planet-img" alt="" width="500" height="500"
-                        srcset="">
+                    <a href="https://ridelite.kesug.com/">
+                        <img src="public/images/planetpurple.png" class="planet-img" alt="" width="500" height="500"
+                            srcset="">
+                    </a>
                 </div>
             </div>
             <div class="project-data">
@@ -1240,7 +1637,7 @@
                         <circle cx="100" cy="85" r="2" fill="white" />
                     </svg>
                 </div>
-                <a href="#" class="project-link">
+                <a href="https://ridelite.kesug.com/" class="project-link">
                     <span class="project-link-line"></span>
                     View case study
                 </a>
@@ -1758,6 +2155,60 @@
                 const dist = window.scrollY;
                 const duration = Math.min(600 + dist * 0.18, 1400);
                 smoothScrollToTop(duration);
+            });
+        })();
+
+        // ═══ INTRO LOADER ═══
+        (function () {
+            document.body.classList.add('loading');
+
+            // Star canvas
+            const sc = document.getElementById('loader-stars-canvas');
+            const sctx = sc.getContext('2d');
+            function resizeStars() { sc.width = window.innerWidth; sc.height = window.innerHeight; }
+            resizeStars();
+            window.addEventListener('resize', resizeStars);
+            const STARS = Array.from({ length: 180 }, () => ({
+                x: Math.random(), y: Math.random(),
+                r: Math.random() * 1.4 + 0.3,
+                o: Math.random() * 0.6 + 0.2,
+                speed: Math.random() * 0.008 + 0.003,
+                phase: Math.random() * Math.PI * 2
+            }));
+            let starT = 0;
+            function drawStars() {
+                sctx.clearRect(0, 0, sc.width, sc.height);
+                starT += 0.016;
+                STARS.forEach(s => {
+                    const op = s.o * (0.5 + 0.5 * Math.sin(starT * s.speed * 60 + s.phase));
+                    sctx.beginPath();
+                    sctx.arc(s.x * sc.width, s.y * sc.height, s.r, 0, Math.PI * 2);
+                    sctx.fillStyle = `rgba(232,228,220,${op})`;
+                    sctx.fill();
+                });
+                if (document.getElementById('intro-loader')) requestAnimationFrame(drawStars);
+            }
+            drawStars();
+
+            // After 2s → switch to ships
+            const p1 = document.getElementById('loader-p1');
+            const p2 = document.getElementById('loader-p2');
+            setTimeout(() => {
+                p1.classList.add('hide');
+                setTimeout(() => {
+                    p1.style.display = 'none';
+                    p2.classList.add('show');
+                }, 600);
+            }, 2000);
+
+            // Click any ship → exit
+            document.querySelectorAll('.ship-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const loader = document.getElementById('intro-loader');
+                    loader.classList.add('exit');
+                    document.body.classList.remove('loading');
+                    setTimeout(() => { loader.remove(); }, 1000);
+                });
             });
         })();
     </script>
