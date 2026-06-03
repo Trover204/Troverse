@@ -1293,6 +1293,109 @@
         body.loading {
             overflow: hidden;
         }
+
+        /* ═══════════════════════════════════
+           RESPONSIVE — MOBILE & TABLET
+        ═══════════════════════════════════ */
+
+        /* ── Tablet (≤ 900px) ── */
+        @media (max-width: 900px) {
+
+            /* Nav */
+            nav { padding: 1.5rem 2rem; }
+
+            /* Hero */
+            #hero { padding: 0 2rem; }
+
+            /* About */
+            #about { padding: 6rem 2rem; }
+            .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+            .about-stats { grid-template-columns: repeat(2, 1fr); }
+            .about-stats > div:nth-child(2) { border-right: none; }
+            .about-stats > div:nth-child(3) { border-top: 1px solid rgba(0,0,0,0.08); }
+
+            /* Work */
+            #work { padding: 5rem 0; }
+            #work .section-label { padding: 0 2rem; }
+            .work-heading-block { padding: 0 2rem; flex-direction: column; align-items: flex-start; gap: 1rem; }
+            .planet-project { grid-template-columns: 1fr; min-height: unset; }
+            .planet-side { height: 50vw; min-height: 260px; }
+            .planet-project:nth-child(even) .planet-side { order: unset; }
+            .planet-project:nth-child(even) .project-data { order: unset; }
+            .project-data { padding: 2.5rem 2rem; }
+            .planet-canvas-wrapper { width: 220px; height: 220px; outline-offset: 10px; }
+
+            /* Contact */
+            #contact { grid-template-columns: 1fr; gap: 3rem; padding: 6rem 2rem; }
+
+            /* Footer */
+            footer { padding: 2rem; flex-wrap: wrap; gap: 1.2rem; }
+            .footer-links { gap: 1.2rem; }
+        }
+
+        /* ── Mobile (≤ 600px) ── */
+        @media (max-width: 600px) {
+
+            /* Cursor — show native on touch */
+            body { cursor: auto; }
+            .cursor, .cursor-ring { display: none; }
+
+            /* Nav */
+            nav { padding: 1.2rem 1.25rem; }
+            .nav-logo { font-size: 20px; }
+            .nav-links { gap: 1.5rem; }
+            .nav-links a { font-size: 0.65rem; }
+
+            /* Hero */
+            #hero { padding: 0 1.25rem; }
+
+            /* About */
+            #about { padding: 5rem 1.25rem; }
+            .about-stats { grid-template-columns: repeat(2, 1fr); }
+            .about-stats > div { padding: 1.5rem 1rem; }
+            .stat-num { font-size: 2.5rem; }
+            .partner-logo img { height: 64px; width: 64px; }
+
+            /* Work */
+            #work { padding: 4rem 0; }
+            #work .section-label { padding: 0 1.25rem; margin-bottom: 2.5rem; }
+            .work-heading-block { padding: 0 1.25rem; margin-bottom: 3rem; }
+            .planet-side { height: 70vw; min-height: 220px; }
+            .planet-canvas-wrapper { width: 160px; height: 160px; outline-offset: 8px; }
+            .project-data { padding: 2rem 1.25rem; }
+            .project-desc { max-width: 100%; }
+
+            /* Contact */
+            #contact { padding: 4rem 1.25rem; gap: 2.5rem; }
+            .contact-heading { font-size: clamp(2.2rem, 10vw, 3.5rem); }
+
+            /* Footer */
+            footer {
+                padding: 1.5rem 1.25rem;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            .footer-copy { order: 3; }
+
+            /* Back to top */
+            #back-to-top { bottom: 1.25rem; right: 1.25rem; width: 42px; height: 42px; }
+
+            /* Loader phase 2 — ships grid wraps on small screens */
+            .ships-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem 1rem;
+                align-items: end;
+                padding: 0 1rem;
+            }
+            .phase2-prompt { font-size: 0.6rem; letter-spacing: 0.3em; margin-bottom: 2rem; }
+            .ship-hitbox { width: 100px; height: 140px; }
+            .spinner-wrap { width: 140px; height: 140px; }
+            .spinner-ring:nth-child(2) { inset: 16px; }
+            .spinner-ring:nth-child(3) { inset: 36px; }
+            .spinner-dot { inset: 58px; }
+        }
     </style>
 </head>
 
