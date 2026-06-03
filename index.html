@@ -158,6 +158,8 @@
             opacity: 0.85;
         }
 
+
+
         .hero-eyebrow {
             font-size: 0.7rem;
             letter-spacing: 0.35em;
@@ -185,6 +187,7 @@
         .hero-title em {
             font-style: italic;
             color: var(--accent);
+            font-weight: 500;
         }
 
         .hero-subtitle {
@@ -302,54 +305,99 @@
         .reveal {
             opacity: 0;
             transform: translateY(36px);
-            transition: opacity 0.75s cubic-bezier(0.22,1,0.36,1),
-                        transform 0.75s cubic-bezier(0.22,1,0.36,1);
+            transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
         }
+
         .reveal.reveal--left {
             transform: translateX(-40px);
         }
+
         .reveal.reveal--right {
             transform: translateX(40px);
         }
+
         .reveal.reveal--scale {
             transform: translateY(20px) scale(0.96);
         }
+
         .reveal.is-visible {
             opacity: 1;
             transform: none;
         }
 
         /* stagger delays */
-        .reveal[data-delay="1"] { transition-delay: 0.1s; }
-        .reveal[data-delay="2"] { transition-delay: 0.2s; }
-        .reveal[data-delay="3"] { transition-delay: 0.3s; }
-        .reveal[data-delay="4"] { transition-delay: 0.4s; }
-        .reveal[data-delay="5"] { transition-delay: 0.5s; }
-        .reveal[data-delay="6"] { transition-delay: 0.6s; }
-        .reveal[data-delay="7"] { transition-delay: 0.7s; }
+        .reveal[data-delay="1"] {
+            transition-delay: 0.1s;
+        }
+
+        .reveal[data-delay="2"] {
+            transition-delay: 0.2s;
+        }
+
+        .reveal[data-delay="3"] {
+            transition-delay: 0.3s;
+        }
+
+        .reveal[data-delay="4"] {
+            transition-delay: 0.4s;
+        }
+
+        .reveal[data-delay="5"] {
+            transition-delay: 0.5s;
+        }
+
+        .reveal[data-delay="6"] {
+            transition-delay: 0.6s;
+        }
+
+        .reveal[data-delay="7"] {
+            transition-delay: 0.7s;
+        }
 
         /* stat counter animation */
         @keyframes countUp {
-            from { opacity: 0; transform: translateY(12px); }
-            to   { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
+
         .stat-num.counted {
-            animation: countUp 0.6s cubic-bezier(0.22,1,0.36,1) both;
+            animation: countUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
         }
 
         /* form field slide-in */
         @keyframes slideInRight {
-            from { opacity: 0; transform: translateX(30px); }
-            to   { opacity: 1; transform: translateX(0); }
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
         /* underline draw for section-label */
         @keyframes drawLine {
-            from { width: 0; }
-            to   { width: 24px; }
+            from {
+                width: 0;
+            }
+
+            to {
+                width: 24px;
+            }
         }
+
         .section-label.is-visible::before {
-            animation: drawLine 0.5s 0.2s cubic-bezier(0.22,1,0.36,1) both;
+            animation: drawLine 0.5s 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
             width: 0;
         }
 
@@ -432,10 +480,11 @@
             padding-top: 3rem;
             border-top: 1px solid rgba(0, 0, 0, 0.08);
             align-items: center;
+            justify-content: center;
         }
 
         .partner-label {
-            font-size: 0.6rem;
+            font-size: 20px;
             letter-spacing: 0.3em;
             text-transform: uppercase;
             color: #bbb;
@@ -646,8 +695,27 @@
         }
 
         #contact-wrapper {
-            background: linear-gradient(180deg, #0e0e0e 0%, #2f3e56 15%, #2f3e56 70%, #0e0e0e 100%);
-            border-top: 1px solid rgba(0, 0, 0, 0.08);
+            background: url(public/images/backgroundcontact.jpg);
+            background-position: center;
+            background-size: cover;
+            position: relative;
+        }
+
+        #contact-wrapper::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 250px;
+
+            background: linear-gradient(to bottom,
+                    #0e0e0e 0%,
+                    rgba(14, 14, 14, 0.9) 30%,
+                    rgba(14, 14, 14, 0.5) 60%,
+                    transparent 100%);
+
+            pointer-events: none;
         }
 
         .contact-heading {
@@ -661,6 +729,7 @@
         .contact-heading em {
             font-style: italic;
             color: #b89a6a;
+            font-weight: 800;
         }
 
         .contact-subtext {
@@ -711,9 +780,14 @@
 
         .form-label {
             font-size: 0.65rem;
+            font-weight: 700;
             letter-spacing: 0.25em;
             text-transform: uppercase;
-            color: #b89a6a;
+            color: hsl(37, 52%, 62%);
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.6) !important;
         }
 
         .form-input {
@@ -776,6 +850,7 @@
         }
 
         .footer-logo {
+            font-family: "Limelight", sans-serif;
             font-weight: 800;
             font-size: 0.8rem;
             letter-spacing: 0.35em;
@@ -813,7 +888,7 @@
             height: 360px;
             border-radius: 50%;
             overflow: hidden;
-            outline: 4px solid rgba(150, 124, 12, 0.973);
+            outline: 4px solid #b89a6a;
             outline-offset: 20px;
             display: flex;
             align-items: center;
@@ -832,27 +907,103 @@
         .planet-img:hover {
             transform: scale(1.1);
         }
+
+        .planet-icon {
+            position: relative;
+            top: -10px;
+            left: -15px;
+        }
+        .project-planet-icon {
+            position: relative;
+            top: -5px;
+            left: -10px;
+        }
+
+        /* Back to top */
+        #back-to-top {
+            position: fixed;
+            bottom: 2.5rem;
+            right: 2.5rem;
+            width: 48px;
+            height: 48px;
+            background: rgba(14,14,14,0.85);
+            border: 1px solid rgba(200,184,154,0.35);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: none;
+            z-index: 200;
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 0.4s ease, transform 0.4s ease, background 0.3s, border-color 0.3s;
+            pointer-events: none;
+            backdrop-filter: blur(8px);
+        }
+        #back-to-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        #back-to-top:hover {
+            background: rgba(184,154,106,0.9);
+            border-color: transparent;
+        }
+        #back-to-top svg {
+            width: 16px;
+            height: 16px;
+            stroke: var(--off-white);
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: transform 0.3s ease;
+        }
+        #back-to-top:hover svg {
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 
 <body>
 
+    <button id="back-to-top" aria-label="Back to top"><svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg></button>
     <div class="cursor" id="cursor"></div>
     <div class="cursor-ring" id="cursor-ring"></div>
 
     <nav>
-        <a href="#hero" class="nav-logo">Troverse</a>
+        <a href="#hero" class="nav-logo">Troverse
+            <svg class="planet-icon" width="20" height="20" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                <!-- Hành tinh -->
+                <circle cx="60" cy="60" r="28" fill="#e8e4dc" />
+
+                <!-- Chi tiết trên hành tinh -->
+                <ellipse cx="52" cy="50" rx="8" ry="4" fill="#fff" opacity="0.7" />
+                <ellipse cx="68" cy="68" rx="10" ry="5" fill="#fff" opacity="0.5" />
+
+                <!-- Vành đai -->
+                <ellipse cx="60" cy="60" rx="45" ry="14" fill="none" stroke="#e8e4dc" stroke-width="6"
+                    transform="rotate(-20 60 60)" />
+
+                <!-- Ngôi sao -->
+                <circle cx="20" cy="25" r="2" fill="white" />
+                <circle cx="95" cy="30" r="1.5" fill="white" />
+                <circle cx="100" cy="85" r="2" fill="white" />
+            </svg>
+        </a>
         <ul class="nav-links">
             <li><a href="#hero">Home</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#work">Work</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
+
     </nav>
 
     <!-- HERO -->
     <section id="hero">
         <canvas id="galaxy-canvas"></canvas>
+
         <p class="hero-eyebrow">Creative Portfolio</p>
         <h1 class="hero-title">Welcome to the<br><em>Troverse</em></h1>
         <p class="hero-subtitle">Where design meets the cosmos</p>
@@ -868,7 +1019,8 @@
             <div class="section-label reveal" data-delay="1">About</div>
             <div class="about-grid">
                 <div>
-                    <h2 class="about-heading reveal reveal--left" data-delay="2">Crafting worlds<br>beyond the<br><em>ordinary</em></h2>
+                    <h2 class="about-heading reveal reveal--left" data-delay="2">Crafting worlds<br>beyond
+                        the<br><em>ordinary</em></h2>
                 </div>
                 <div class="about-body reveal reveal--right" data-delay="3">
                     <p>We exist at the intersection of imagination and precision — a creative studio that treats every
@@ -897,12 +1049,18 @@
                 </div>
                 <div class="partner reveal" data-delay="2">
                     <div class="partner-label">Trusted by</div>
-                    <div class="partner-logo reveal" data-delay="2"><img src="public/images/partner1.png" alt="" srcset=""></div>
-                    <div class="partner-logo reveal" data-delay="3"><img src="public/images/partner2.png" alt="" srcset=""></div>
-                    <div class="partner-logo reveal" data-delay="4"><img src="public/images/partner3.png" alt="" srcset=""></div>
-                    <div class="partner-logo reveal" data-delay="5"><img src="public/images/partner4.png" alt="" srcset=""></div>
-                    <div class="partner-logo reveal" data-delay="6"><img src="public/images/partner5.png" alt="" srcset=""></div>
-                    <div class="partner-logo reveal" data-delay="7"><img src="public/images/partner6.png" alt="" srcset=""></div>
+                    <div class="partner-logo reveal" data-delay="2"><img src="public/images/partner1.png" alt=""
+                            srcset=""></div>
+                    <div class="partner-logo reveal" data-delay="3"><img src="public/images/partner2.png" alt=""
+                            srcset=""></div>
+                    <div class="partner-logo reveal" data-delay="4"><img src="public/images/partner3.png" alt=""
+                            srcset=""></div>
+                    <div class="partner-logo reveal" data-delay="5"><img src="public/images/partner4.png" alt=""
+                            srcset=""></div>
+                    <div class="partner-logo reveal" data-delay="6"><img src="public/images/partner5.png" alt=""
+                            srcset=""></div>
+                    <div class="partner-logo reveal" data-delay="7"><img src="public/images/partner6.png" alt=""
+                            srcset=""></div>
                 </div>
             </div>
         </div>
@@ -935,6 +1093,24 @@
                     <span class="tag">Brand Identity</span>
                     <span class="tag">Visual System</span>
                     <span class="tag">Motion</span>
+                    <svg class="project-planet-icon" width="30" height="30" viewBox="0 0 120 120"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <!-- Hành tinh -->
+                        <circle cx="60" cy="60" r="28" fill="lightblue" />
+
+                        <!-- Chi tiết trên hành tinh -->
+                        <ellipse cx="52" cy="50" rx="8" ry="4" fill="#fff" opacity="0.7" />
+                        <ellipse cx="68" cy="68" rx="10" ry="5" fill="#fff" opacity="0.5" />
+
+                        <!-- Vành đai -->
+                        <ellipse cx="60" cy="60" rx="45" ry="14" fill="none" stroke="#e8e4dc" stroke-width="6"
+                            transform="rotate(-20 60 60)" />
+
+                        <!-- Ngôi sao -->
+                        <circle cx="20" cy="25" r="2" fill="white" />
+                        <circle cx="95" cy="30" r="1.5" fill="white" />
+                        <circle cx="100" cy="85" r="2" fill="white" />
+                    </svg>
                 </div>
                 <a href="#" class="project-link">
                     <span class="project-link-line"></span>
@@ -959,6 +1135,24 @@
                     <span class="tag">Web Design</span>
                     <span class="tag">Art Direction</span>
                     <span class="tag">Interaction</span>
+                    <svg class="project-planet-icon" width="30" height="30" viewBox="0 0 120 120"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <!-- Hành tinh -->
+                        <circle cx="60" cy="60" r="28" fill="red" />
+
+                        <!-- Chi tiết trên hành tinh -->
+                        <ellipse cx="52" cy="50" rx="8" ry="4" fill="#fff" opacity="0.7" />
+                        <ellipse cx="68" cy="68" rx="10" ry="5" fill="#fff" opacity="0.5" />
+
+                        <!-- Vành đai -->
+                        <ellipse cx="60" cy="60" rx="45" ry="14" fill="none" stroke="#e8e4dc" stroke-width="6"
+                            transform="rotate(-20 60 60)" />
+
+                        <!-- Ngôi sao -->
+                        <circle cx="20" cy="25" r="2" fill="white" />
+                        <circle cx="95" cy="30" r="1.5" fill="white" />
+                        <circle cx="100" cy="85" r="2" fill="white" />
+                    </svg>
                 </div>
                 <a href="#" class="project-link">
                     <span class="project-link-line"></span>
@@ -984,6 +1178,24 @@
                     <span class="tag">Editorial</span>
                     <span class="tag">Campaign</span>
                     <span class="tag">Photography</span>
+                    <svg class="project-planet-icon" width="30" height="30" viewBox="0 0 120 120"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <!-- Hành tinh -->
+                        <circle cx="60" cy="60" r="28" fill="green" />
+
+                        <!-- Chi tiết trên hành tinh -->
+                        <ellipse cx="52" cy="50" rx="8" ry="4" fill="#fff" opacity="0.7" />
+                        <ellipse cx="68" cy="68" rx="10" ry="5" fill="#fff" opacity="0.5" />
+
+                        <!-- Vành đai -->
+                        <ellipse cx="60" cy="60" rx="45" ry="14" fill="none" stroke="#e8e4dc" stroke-width="6"
+                            transform="rotate(-20 60 60)" />
+
+                        <!-- Ngôi sao -->
+                        <circle cx="20" cy="25" r="2" fill="white" />
+                        <circle cx="95" cy="30" r="1.5" fill="white" />
+                        <circle cx="100" cy="85" r="2" fill="white" />
+                    </svg>
                 </div>
                 <a href="#" class="project-link">
                     <span class="project-link-line"></span>
@@ -1009,6 +1221,24 @@
                     <span class="tag">Product Launch</span>
                     <span class="tag">Film</span>
                     <span class="tag">Creative Direction</span>
+                    <svg class="project-planet-icon" width="30" height="30" viewBox="0 0 120 120"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <!-- Hành tinh -->
+                        <circle cx="60" cy="60" r="28" fill="purple" />
+
+                        <!-- Chi tiết trên hành tinh -->
+                        <ellipse cx="52" cy="50" rx="8" ry="4" fill="#fff" opacity="0.7" />
+                        <ellipse cx="68" cy="68" rx="10" ry="5" fill="#fff" opacity="0.5" />
+
+                        <!-- Vành đai -->
+                        <ellipse cx="60" cy="60" rx="45" ry="14" fill="none" stroke="#b89a6a" stroke-width="6"
+                            transform="rotate(-20 60 60)" />
+
+                        <!-- Ngôi sao -->
+                        <circle cx="20" cy="25" r="2" fill="white" />
+                        <circle cx="95" cy="30" r="1.5" fill="white" />
+                        <circle cx="100" cy="85" r="2" fill="white" />
+                    </svg>
                 </div>
                 <a href="#" class="project-link">
                     <span class="project-link-line"></span>
@@ -1020,11 +1250,14 @@
 
     <!-- CONTACT -->
     <div id="contact-wrapper">
+
         <section id="contact">
             <div>
                 <div class="section-label reveal" data-delay="1" style="color:#b89a6a;">Contact</div>
-                <h2 class="contact-heading reveal reveal--left" data-delay="2">Let's build<br>something<br><em>cosmic</em></h2>
-                <p class="contact-subtext reveal" data-delay="3">Whether you have a clear vision or just a feeling — we'd love to hear from
+                <h2 class="contact-heading reveal reveal--left" data-delay="2">Let's
+                    build<br>something<br><em>cosmic</em></h2>
+                <p class="contact-subtext reveal" data-delay="3">Whether you have a clear vision or just a feeling —
+                    we'd love to hear from
                     you.
                     Every great project starts with a conversation.</p>
                 <div class="contact-info">
@@ -1424,6 +1657,9 @@
             render();
         }
 
+
+
+
         planetConfigs.forEach(drawPlanet);
 
         // Scroll reveal — planet projects
@@ -1481,6 +1717,49 @@
         document.querySelectorAll('.about-stats > div').forEach(el => {
             statObserver.observe(el);
         });
+
+        // Back to top
+        (function () {
+            const btn = document.getElementById('back-to-top');
+            const about = document.getElementById('about');
+
+            const obs = new IntersectionObserver(entries => {
+                entries.forEach(e => {
+                    btn.classList.toggle('visible', !e.isIntersecting);
+                });
+            }, { threshold: 0 });
+            obs.observe(about);
+
+            // Easing: ease-in-out quint — rất mượt, bắt đầu nhanh rồi giảm dần nhẹ nhàng
+            function easeInOutQuint(t) {
+                return t < 0.5
+                    ? 16 * t * t * t * t * t
+                    : 1 - Math.pow(-2 * t + 2, 5) / 2;
+            }
+
+            function smoothScrollToTop(duration) {
+                const start = window.scrollY;
+                if (start === 0) return;
+                let startTime = null;
+
+                function step(now) {
+                    if (!startTime) startTime = now;
+                    const elapsed = now - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const eased = easeInOutQuint(progress);
+                    window.scrollTo(0, start * (1 - eased));
+                    if (progress < 1) requestAnimationFrame(step);
+                }
+                requestAnimationFrame(step);
+            }
+
+            btn.addEventListener('click', () => {
+                // Duration tỉ lệ theo khoảng cách — xa hơn thì lâu hơn, nhưng có giới hạn
+                const dist = window.scrollY;
+                const duration = Math.min(600 + dist * 0.18, 1400);
+                smoothScrollToTop(duration);
+            });
+        })();
     </script>
 </body>
 
