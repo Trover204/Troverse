@@ -142,10 +142,6 @@
             position: relative;
             height: 100vh;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 0 4rem;
             overflow: hidden;
         }
 
@@ -158,7 +154,114 @@
             opacity: 0.85;
         }
 
+        #hero {
+            position: relative;
+            min-height: 100vh;
+            overflow: hidden;
+        }
 
+        .hero-container {
+            position: relative;
+            z-index: 2;
+
+            max-width: 2000px;
+            margin: 0 auto;
+            padding: 0 8%;
+
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 300px;
+        }
+
+        .hero-card {
+            transition: transform 1.5s ease;
+        }
+
+        .hero-card:hover {
+            transform:
+                translateY(-10px) rotate(-2deg);
+        }
+
+        .hero-card-img {
+            transition: transform 1s ease;
+        }
+
+        .hero-card:hover .hero-card-img {
+            transform: scale(1.03);
+        }
+
+        .hero-content {
+            flex: 1;
+        }
+        .hero-card {
+            position: relative;
+
+            width: 200px;
+            height: 200px;
+
+
+            align-items: center;
+            justify-content: end !important;
+
+            border-radius: 50%;
+        }
+
+        .hero-card-glow {
+            position: absolute;
+            inset: 0;
+
+            border: 2px solid transparent;
+            border-radius: 50px;
+            background:
+                linear-gradient(135deg,
+                    #b89a6a,
+                    #49464921,
+                    #b89a6a);
+
+            padding: 4px;
+
+            -webkit-mask:
+                linear-gradient(#fff 0 0) content-box,
+                linear-gradient(#fff 0 0);
+
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+
+            box-shadow:
+                0 0 25px #808080,
+                0 0 50px #79835e;
+        }
+
+        .hero-card-img {
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+
+            border-radius: 50%;
+
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-card::before {
+            content: "";
+
+            position: absolute;
+
+            width: 80px;
+            height: 100px;
+
+            background: grey;
+            filter: blur(120px);
+
+            opacity: 0.3;
+
+            z-index: -1;
+        }
 
         .hero-eyebrow {
             font-size: 0.7rem;
@@ -190,7 +293,9 @@
             font-weight: 500;
         }
 
+
         .hero-subtitle {
+
             font-size: 0.8rem;
             letter-spacing: 0.15em;
             color: var(--muted);
@@ -893,6 +998,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: transform 1s ease;
         }
 
 
@@ -901,10 +1007,9 @@
             height: 100%;
             object-fit: cover;
             display: block;
-            transition: transform 1s ease;
         }
 
-        .planet-img:hover {
+        .planet-canvas-wrapper:hover {
             transform: scale(1.1);
         }
 
@@ -1419,11 +1524,11 @@
             }
 
             .nav-links {
-                gap: 1.5rem;
+                gap: 2rem;
             }
 
             .nav-links a {
-                font-size: 0.65rem;
+                font-size: 40;
             }
 
             /* Hero */
@@ -1553,6 +1658,11 @@
             .spinner-dot {
                 inset: 58px;
             }
+
+            .project-title-highlight {
+                font-weight: 1000;
+                font-size: 30px;
+            }
         }
     </style>
 </head>
@@ -1608,7 +1718,7 @@
             <li><a href="#hero">Home</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#work">Work</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="author.html">Author</a></li>
         </ul>
 
     </nav>
@@ -1617,12 +1727,35 @@
     <section id="hero">
         <canvas id="galaxy-canvas"></canvas>
 
-        <p class="hero-eyebrow">Creative Portfolio</p>
-        <h1 class="hero-title">Welcome to the<br><em>Troverse</em></h1>
-        <p class="hero-subtitle">Where design meets the cosmos</p>
-        <div class="hero-scroll">
-            <div class="hero-scroll-line"></div>
-            Scroll to explore
+        <div class="hero-container">
+            <!-- Left -->
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    Welcome to the<br><em>Troverse</em>
+                </h1>
+
+                <p class="hero-subtitle">
+                    Your stories build our universe
+                </p>
+
+                <div class="hero-scroll">
+                    <div class="hero-scroll-line"></div>
+                    Scroll to explore
+                </div>
+            </div>
+
+            <!-- Right -->
+            <div class="hero-content-right">
+                <div class="hero-card">
+                    <div class="hero-card-glow"></div>
+                    <a href="author.html">
+                        <img src="public/images/portrait.png" alt="Troverse Avatar" class="hero-card-img" />
+                    </a>
+
+
+                </div>
+                <div class="hero-subtitle">Meet the author</div>
+            </div>
         </div>
     </section>
 
@@ -1632,8 +1765,8 @@
             <div class="section-label reveal" data-delay="1">About</div>
             <div class="about-grid">
                 <div>
-                    <h2 class="about-heading reveal reveal--left" data-delay="2">Crafting worlds<br>beyond
-                        the<br><em>ordinary</em></h2>
+                    <h2 class="about-heading reveal reveal--left" data-delay="2">Expressing worlds<br>beyond
+                        the<br><em>imagination</em></h2>
                 </div>
                 <div class="about-body reveal reveal--right" data-delay="3">
                     <p>We exist at the intersection of imagination and precision — a creative studio that treats every
@@ -1699,13 +1832,17 @@
             </div>
             <div class="project-data">
                 <div class="project-index">001 / 004</div>
-                <h3 class="project-title">Nebula Brand<br>Identity System</h3>
-                <p class="project-desc">A complete visual identity for a deep-tech startup navigating the frontier of
-                    quantum computing. The system draws from cosmic phenomena — fluid, dynamic, yet grounded.</p>
+                <h3 class="project-title">VOLT <em>17</em></h3>
+                <p class="project-desc">
+                    Publishing bold indie games for players who crave original stories, distinctive art, and memorable
+                    gameplay.
+                    We partner with visionary developers to turn ambitious ideas into remarkable experiences.
+                </p>
+
                 <div class="project-tags">
-                    <span class="tag">Brand Identity</span>
-                    <span class="tag">Visual System</span>
-                    <span class="tag">Motion</span>
+                    <span class="tag">Game Publishing</span>
+                    <span class="tag">Indie Games</span>
+                    <span class="tag">Community</span>
                     <svg class="project-planet-icon" width="30" height="30" viewBox="0 0 120 120"
                         xmlns="http://www.w3.org/2000/svg">
                         <!-- Hành tinh -->
@@ -1727,7 +1864,7 @@
                 </div>
                 <a href="https://trover204.github.io/volt17/" class="project-link">
                     <span class="project-link-line"></span>
-                    View case study
+                    View project
                 </a>
             </div>
         </div>
@@ -1744,13 +1881,17 @@
             </div>
             <div class="project-data">
                 <div class="project-index">002 / 004</div>
-                <h3 class="project-title">Void Digital<br>Experience</h3>
-                <p class="project-desc">An immersive web platform for a luxury real estate developer. Every interaction
-                    was choreographed to evoke the sensation of moving through silent, vast space.</p>
+                <h3 class="project-title">W&W
+                </h3>
+                <p class="project-desc">
+                    A contemporary fashion platform exploring timeless style, modern trends, and curated collections.
+                    Designed for individuals who express their identity through fashion.
+                </p>
+
                 <div class="project-tags">
-                    <span class="tag">Web Design</span>
-                    <span class="tag">Art Direction</span>
-                    <span class="tag">Interaction</span>
+                    <span class="tag">Fashion</span>
+                    <span class="tag">Minimalistic</span>
+                    <span class="tag">Modern</span>
                     <svg class="project-planet-icon" width="30" height="30" viewBox="0 0 120 120"
                         xmlns="http://www.w3.org/2000/svg">
                         <!-- Hành tinh -->
@@ -1789,13 +1930,17 @@
             </div>
             <div class="project-data">
                 <div class="project-index">003 / 004</div>
-                <h3 class="project-title">Stardust Editorial<br>Campaign</h3>
-                <p class="project-desc">A multi-channel editorial campaign for an independent fashion house. Shot in
-                    volcanic landscapes and deep forests — places where earth feels alien, beautiful, and untamed.</p>
+                <h3 class="project-title">Charifix</h3>
+                <p class="project-desc">
+                    A charity platform dedicated to creating meaningful change through compassion, community, and
+                    collective action.
+                    Connecting donors, volunteers, and causes that make a lasting impact.
+                </p>
+
                 <div class="project-tags">
-                    <span class="tag">Editorial</span>
-                    <span class="tag">Campaign</span>
-                    <span class="tag">Photography</span>
+                    <span class="tag">Charity</span>
+                    <span class="tag">Community Impact</span>
+                    <span class="tag">Fundraising</span>
                     <svg class="project-planet-icon" width="30" height="30" viewBox="0 0 120 120"
                         xmlns="http://www.w3.org/2000/svg">
                         <!-- Hành tinh -->
@@ -1834,13 +1979,16 @@
             </div>
             <div class="project-data">
                 <div class="project-index">004 / 004</div>
-                <h3 class="project-title">Horizon Product<br>Launch</h3>
-                <p class="project-desc">Full creative direction for a flagship product launch — from naming architecture
-                    to launch film. We built a world around the product before the product ever shipped.</p>
+                <h3 class="project-title">RideLite</h3>
+                <p class="project-desc">
+                    A premium destination for motorcycles, combining performance, innovation, and design.
+                    Helping riders discover machines built for every journey and adventure.
+                </p>
+
                 <div class="project-tags">
-                    <span class="tag">Product Launch</span>
-                    <span class="tag">Film</span>
-                    <span class="tag">Creative Direction</span>
+                    <span class="tag">Motorcycles</span>
+                    <span class="tag">Performance</span>
+                    <span class="tag">Lifestyle</span>
                     <svg class="project-planet-icon" width="30" height="30" viewBox="0 0 120 120"
                         xmlns="http://www.w3.org/2000/svg">
                         <!-- Hành tinh -->
@@ -1875,7 +2023,7 @@
             <div>
                 <div class="section-label reveal" data-delay="1" style="color:#b89a6a;">Contact</div>
                 <h2 class="contact-heading reveal reveal--left" data-delay="2">Let's
-                    build<br>something<br><em>cosmic</em></h2>
+                    build<br>the<br><em>cosmos</em></h2>
                 <p class="contact-subtext reveal" data-delay="3">Whether you have a clear vision or just a feeling —
                     we'd love to hear from
                     you.
@@ -2082,205 +2230,7 @@
             draw();
         })();
 
-        // PLANETS
-        const planetConfigs = [
-            {
-                id: 'planet1',
-                baseColor: [60, 80, 180],
-                ringColor: 'rgba(100,130,220,',
-                hasRing: true,
-                bandColors: ['rgba(40,60,150,1)', 'rgba(70,100,200,1)', 'rgba(55,75,170,1)', 'rgba(80,110,210,1)'],
-                glowColor: 'rgba(80,100,200,0.25)',
-                atmosphereColor: 'rgba(60,80,180,0.5)',
-                lightDir: { x: -0.5, y: -0.5 }
-            },
-            {
-                id: 'planet2',
-                baseColor: [180, 100, 40],
-                ringColor: 'rgba(200,150,80,',
-                hasRing: true,
-                bandColors: ['rgba(160,80,30,1)', 'rgba(200,120,50,1)', 'rgba(170,90,35,1)', 'rgba(210,130,55,1)'],
-                glowColor: 'rgba(200,120,50,0.25)',
-                atmosphereColor: 'rgba(200,100,40,0.5)',
-                lightDir: { x: 0.5, y: -0.4 }
-            },
-            {
-                id: 'planet3',
-                baseColor: [60, 160, 120],
-                ringColor: 'rgba(80,180,140,',
-                hasRing: false,
-                bandColors: ['rgba(40,140,100,1)', 'rgba(70,180,130,1)', 'rgba(50,155,115,1)', 'rgba(75,185,135,1)'],
-                glowColor: 'rgba(60,180,120,0.25)',
-                atmosphereColor: 'rgba(60,180,120,0.5)',
-                lightDir: { x: -0.3, y: -0.6 }
-            },
-            {
-                id: 'planet4',
-                baseColor: [160, 60, 60],
-                ringColor: 'rgba(200,100,80,',
-                hasRing: true,
-                bandColors: ['rgba(140,40,40,1)', 'rgba(180,70,60,1)', 'rgba(150,50,50,1)', 'rgba(185,75,65,1)'],
-                glowColor: 'rgba(180,60,60,0.25)',
-                atmosphereColor: 'rgba(180,60,60,0.5)',
-                lightDir: { x: 0.4, y: -0.5 }
-            }
-        ];
 
-        function drawPlanet(cfg) {
-            const canvas = document.getElementById(cfg.id);
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            const W = canvas.width, H = canvas.height;
-            const cx = W / 2, cy = H / 2;
-            const R = W * 0.3;
-            let t = 0;
-
-            function render() {
-                ctx.clearRect(0, 0, W, H);
-                t += 0.004;
-
-                // Ambient glow
-                const glow = ctx.createRadialGradient(cx, cy, R * 0.5, cx, cy, R * 1.8);
-                glow.addColorStop(0, cfg.glowColor);
-                glow.addColorStop(1, 'transparent');
-                ctx.fillStyle = glow;
-                ctx.fillRect(0, 0, W, H);
-
-                // Ring behind planet
-                if (cfg.hasRing) {
-                    ctx.save();
-                    ctx.translate(cx, cy);
-                    ctx.scale(1, 0.28);
-                    const ringR1 = R * 1.45, ringR2 = R * 2.1;
-                    const ringGrad = ctx.createRadialGradient(0, 0, ringR1, 0, 0, ringR2);
-                    ringGrad.addColorStop(0, cfg.ringColor + '0.5)');
-                    ringGrad.addColorStop(0.4, cfg.ringColor + '0.35)');
-                    ringGrad.addColorStop(0.7, cfg.ringColor + '0.15)');
-                    ringGrad.addColorStop(1, cfg.ringColor + '0)');
-                    ctx.fillStyle = ringGrad;
-                    ctx.beginPath();
-                    ctx.arc(0, 0, ringR2, 0, Math.PI * 2);
-                    ctx.arc(0, 0, ringR1, Math.PI * 2, 0, true);
-                    ctx.fill();
-                    ctx.restore();
-                }
-
-                // Planet body
-                ctx.save();
-                ctx.beginPath();
-                ctx.arc(cx, cy, R, 0, Math.PI * 2);
-                ctx.clip();
-
-                // Base sphere gradient
-                const sphereGrad = ctx.createRadialGradient(
-                    cx + cfg.lightDir.x * R * 0.6,
-                    cy + cfg.lightDir.y * R * 0.6,
-                    R * 0.05,
-                    cx, cy, R
-                );
-                const [r, g, b] = cfg.baseColor;
-                sphereGrad.addColorStop(0, `rgba(${Math.min(r + 80, 255)},${Math.min(g + 80, 255)},${Math.min(b + 80, 255)},1)`);
-                sphereGrad.addColorStop(0.4, `rgba(${r},${g},${b},1)`);
-                sphereGrad.addColorStop(1, `rgba(${Math.max(r - 60, 0)},${Math.max(g - 60, 0)},${Math.max(b - 60, 0)},1)`);
-                ctx.fillStyle = sphereGrad;
-                ctx.fillRect(cx - R, cy - R, R * 2, R * 2);
-
-                // Cloud bands
-                cfg.bandColors.forEach((color, i) => {
-                    const bandY = cy - R + (i + 0.5) * (R * 2 / (cfg.bandColors.length + 1));
-                    const bandH = R * 0.12;
-                    const wave = Math.sin(t * 0.7 + i * 1.3) * 4;
-                    ctx.fillStyle = color;
-                    ctx.globalAlpha = 0.35 + Math.sin(t + i) * 0.05;
-                    ctx.beginPath();
-                    for (let x = cx - R; x <= cx + R; x += 4) {
-                        const localWave = Math.sin((x - cx) * 0.025 + t * (i % 2 ? 1 : -1)) * 6;
-                        ctx.rect(x, bandY + wave + localWave - bandH / 2, 4, bandH);
-                    }
-                    ctx.fill();
-                    ctx.globalAlpha = 1;
-                });
-
-                // Atmosphere shimmer
-                const atmGrad = ctx.createRadialGradient(cx, cy, R * 0.7, cx, cy, R);
-                atmGrad.addColorStop(0, 'transparent');
-                atmGrad.addColorStop(1, cfg.atmosphereColor);
-                ctx.fillStyle = atmGrad;
-                ctx.globalAlpha = 0.3;
-                ctx.fillRect(cx - R, cy - R, R * 2, R * 2);
-                ctx.globalAlpha = 1;
-
-                // Shadow side
-                const shadowAngle = Math.atan2(-cfg.lightDir.y, -cfg.lightDir.x);
-                const shadowGrad = ctx.createRadialGradient(
-                    cx + Math.cos(shadowAngle) * R * 0.6,
-                    cy + Math.sin(shadowAngle) * R * 0.6,
-                    0,
-                    cx + Math.cos(shadowAngle) * R * 0.4,
-                    cy + Math.sin(shadowAngle) * R * 0.4,
-                    R * 1.1
-                );
-                shadowGrad.addColorStop(0, 'transparent');
-                shadowGrad.addColorStop(0.5, 'rgba(0,0,0,0.2)');
-                shadowGrad.addColorStop(1, 'rgba(0,0,0,0.75)');
-                ctx.fillStyle = shadowGrad;
-                ctx.fillRect(cx - R, cy - R, R * 2, R * 2);
-
-                // Specular highlight
-                const specGrad = ctx.createRadialGradient(
-                    cx + cfg.lightDir.x * R * 0.55,
-                    cy + cfg.lightDir.y * R * 0.55,
-                    0,
-                    cx + cfg.lightDir.x * R * 0.55,
-                    cy + cfg.lightDir.y * R * 0.55,
-                    R * 0.45
-                );
-                specGrad.addColorStop(0, 'rgba(255,255,255,0.18)');
-                specGrad.addColorStop(1, 'transparent');
-                ctx.fillStyle = specGrad;
-                ctx.fillRect(cx - R, cy - R, R * 2, R * 2);
-
-                ctx.restore();
-
-                // Ring in front
-                if (cfg.hasRing) {
-                    ctx.save();
-                    ctx.translate(cx, cy);
-                    ctx.scale(1, 0.28);
-                    const ringR1 = R * 1.45, ringR2 = R * 2.1;
-                    ctx.beginPath();
-                    ctx.arc(0, 0, ringR2, Math.PI, Math.PI * 2);
-                    ctx.arc(0, 0, ringR1, Math.PI * 2, Math.PI, true);
-                    ctx.closePath();
-                    const ringGrad2 = ctx.createRadialGradient(0, 0, ringR1, 0, 0, ringR2);
-                    ringGrad2.addColorStop(0, cfg.ringColor + '0.6)');
-                    ringGrad2.addColorStop(0.5, cfg.ringColor + '0.4)');
-                    ringGrad2.addColorStop(1, cfg.ringColor + '0)');
-                    ctx.fillStyle = ringGrad2;
-                    ctx.fill();
-                    ctx.restore();
-                }
-
-                // Atmosphere rim glow
-                const rimGrad = ctx.createRadialGradient(cx, cy, R * 0.92, cx, cy, R * 1.12);
-                rimGrad.addColorStop(0, 'transparent');
-                rimGrad.addColorStop(0.5, cfg.atmosphereColor.replace('0.5', '0.15'));
-                rimGrad.addColorStop(1, 'transparent');
-                ctx.fillStyle = rimGrad;
-                ctx.beginPath();
-                ctx.arc(cx, cy, R * 1.12, 0, Math.PI * 2);
-                ctx.arc(cx, cy, R * 0.92, Math.PI * 2, 0, true);
-                ctx.fill();
-
-                requestAnimationFrame(render);
-            }
-            render();
-        }
-
-
-
-
-        planetConfigs.forEach(drawPlanet);
 
         // Scroll reveal — planet projects
         const observer = new IntersectionObserver(entries => {
