@@ -118,7 +118,7 @@
             position: relative;
             overflow: hidden;
         }
-        
+
         .hero-bg-circle {
             position: absolute;
             border-radius: 50%;
@@ -219,6 +219,17 @@
             width: 420px;
             height: 420px;
             z-index: 1;
+            overflow: hidden;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-image-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .hero-circle-bg {
@@ -230,6 +241,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+            z-index: -1;
         }
 
         .hero-img {
@@ -368,6 +380,7 @@
         }
 
         .about-circle {
+            position: relative;
             width: 340px;
             height: 340px;
             border-radius: 50%;
@@ -378,11 +391,13 @@
             overflow: hidden;
             margin: 0 auto;
         }
-
-        .about-circle img {
-            width: 290px;
+    .about-circle img {
+            width: 100%;
+            height: 100%;
             object-fit: cover;
+            object-position: top;
         }
+
 
         .about-dot1 {
             position: absolute;
@@ -606,6 +621,12 @@
             justify-content: center;
             gap: 12px;
             margin-top: 36px;
+        }
+
+        .portfolio-img-card {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .pnav-btn {
@@ -985,6 +1006,129 @@
                 flex-wrap: wrap;
                 padding: 24px;
             }
+
+            .skill {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 12px;
+                animation: float 3s ease-in-out infinite;
+
+            }
+
+            .service-card:hover {
+                background-color: #b89a6a;
+                color: black;
+                border: 1px solid black;
+            }
+
+            #life-journey {
+                padding: 120px 10%;
+                background: #050510;
+                position: relative;
+            }
+
+            .journey-container {
+                max-width: 1100px;
+                margin: auto;
+            }
+
+            .section-header {
+                text-align: center;
+                margin-bottom: 80px;
+            }
+
+            .section-tag {
+                color: #a855f7;
+                letter-spacing: 3px;
+                font-size: 0.85rem;
+                font-weight: 600;
+            }
+
+            .section-header h2 {
+                font-size: 3rem;
+                color: white;
+                margin: 15px 0;
+            }
+
+            .section-header p {
+                color: #a0a0b8;
+                max-width: 600px;
+                margin: auto;
+                line-height: 1.8;
+            }
+
+            .timeline {
+                position: relative;
+                padding-left: 40px;
+            }
+
+            .timeline::before {
+                content: "";
+                position: absolute;
+                left: 9px;
+                top: 0;
+                width: 2px;
+                height: 100%;
+                background: linear-gradient(#ff00ff,
+                        #8b5cf6,
+                        #2563eb);
+            }
+
+            .timeline-item {
+                position: relative;
+                margin-bottom: 60px;
+            }
+
+            .timeline-dot {
+                position: absolute;
+                left: -40px;
+                top: 10px;
+
+                width: 20px;
+                height: 20px;
+
+                border-radius: 50%;
+
+                background: #8b5cf6;
+
+                box-shadow:
+                    0 0 15px #8b5cf6,
+                    0 0 30px #8b5cf6;
+            }
+
+            .timeline-content {
+                background: rgba(255, 255, 255, 0.04);
+                backdrop-filter: blur(10px);
+
+                border: 1px solid rgba(255, 255, 255, 0.08);
+
+                border-radius: 20px;
+
+                padding: 25px;
+                transition: 0.3s;
+            }
+
+            .timeline-content:hover {
+                transform: translateY(-5px);
+                border-color: #8b5cf6;
+            }
+
+            .timeline-year {
+                color: #a855f7;
+                font-weight: 700;
+            }
+
+            .timeline-content h3 {
+                color: white;
+                margin: 10px 0;
+            }
+
+            .timeline-content p {
+                color: #b6b6c7;
+                line-height: 1.8;
+            }
+
         }
     </style>
 </head>
@@ -993,10 +1137,10 @@
 
     <!-- NAV -->
     <nav>
-        <div class="logo">James <span>Ryan</span></div>
+        <div class="logo"> DH <span>P</span></div>
         <ul class="nav-links">
             <li><a href="#home">Home</a></li>
-            <li><a href="#about">About Us</a></li>
+            <li><a href="#about">About Me</a></li>
             <li><a href="#services">Service</a></li>
             <li><a href="#portfolio">Portfolio</a></li>
         </ul>
@@ -1009,17 +1153,15 @@
             <div class="hero-bg-circle c1"></div>
             <div class="hero-bg-circle c2"></div>
             <div class="hero-content fade-up">
-                <p class="hero-greeting">Hi, I'm James Ryan</p>
-                <h1 class="hero-title">I'm <span class="accent">Full-Stack</span><br>Expert Developer.</h1>
+                <p class="hero-greeting">Hi, I'm Hoang Phuc</p>
+                <h1 class="hero-title">I'm a <span class="accent">Full-Stack</span><br> Developer.</h1>
                 <p class="hero-desc">I am a full-stack web developer. I can provide clean code and pixel perfect design.
                 </p>
                 <a href="#portfolio" class="btn-primary">My Projects &rarr;</a>
             </div>
             <div class="hero-image-wrap">
                 <div class="hero-circle-bg"></div>
-                <div
-                    style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:8rem;user-select:none;">
-                    👨‍💻</div>
+                <img src="public/images/portrait22.jpg" alt="">
                 <div class="dot d1"></div>
                 <div class="dot d2"></div>
                 <div class="dot d3"></div>
@@ -1054,15 +1196,15 @@
         <div class="about-grid">
             <div class="about-img-wrap fade-up">
                 <div class="about-circle">
-                    <span style="font-size:9rem;padding-bottom:10px;">🧑‍💻</span>
+                       <img src="public/images/portrait33.jpg" alt="Hoang Phuc">
                 </div>
                 <div class="about-dot1"></div>
                 <div class="about-tri"></div>
             </div>
             <div class="fade-up">
                 <p class="section-eyebrow">About Me</p>
-                <h2 class="section-title">James <span class="accent">Ryan</span></h2>
-                <p class="about-desc">Hello! I'm James Ryan, Web Developer with over 8 years of experience. Experienced
+                <h2 class="section-title">Hoang <span class="accent">Phuc</span></h2>
+                <p class="about-desc">Hello! I'm Hoang Phuc, Web Developer with over 8 years of experience. Experienced
                     with all stages of the development cycle for dynamic web projects. Having an in-depth knowledge
                     including advanced HTML5, CSS3, JavaScript, jQuery, Angular JS. Strong background in management and
                     leadership.</p>
@@ -1074,99 +1216,139 @@
                     <span class="skill-tag">React</span>
                     <span class="skill-tag">GIT</span>
                     <span class="skill-tag">Github</span>
-                    <span class="skill-tag">SASS</span>
-                    <span class="skill-tag">Python</span>
+                    <span class="skill-tag">Java</span>
+                    <span class="skill-tag">C#</span>
                 </div>
                 <a href="#contact" class="btn-outline">Learn More &rarr;</a>
             </div>
         </div>
     </section>
 
-    <!-- SERVICES -->
-    <section id="services">
-        <div style="text-align:center;" class="fade-up">
-            <p class="section-eyebrow">Services I Offer to my Clients</p>
-            <h2 class="section-title">My Best <span class="accent">Service</span></h2>
-        </div>
-        <div class="services-grid">
-            <div class="service-card fade-up">
-                <div class="service-icon">🌐</div>
-                <div class="service-eyebrow">Web Development</div>
-                <div class="service-card-title">Web Design &amp; Logo</div>
-                <p class="service-desc">I use animation as a third dimension by which to simplify experiences and
-                    building thru each and every interaction.</p>
-                <a href="#contact" class="service-link">See Pricing &rarr;</a>
+    <section id="life-journey">
+        <div class="journey-container">
+
+            <div class="section-header">
+                <span class="section-tag">MY JOURNEY</span>
+                <h2>Life Experiences</h2>
+                <p>
+                    Every challenge, every mistake, and every success
+                    became a star in my universe.
+                </p>
             </div>
-            <div class="service-card fade-up">
-                <div class="service-icon">📱</div>
-                <div class="service-eyebrow">Apps Development</div>
-                <div class="service-card-title">iOS &amp; Android</div>
-                <p class="service-desc">I use animation as a third dimension by which to simplify experiences and
-                    building thru each and every interaction.</p>
-                <a href="#contact" class="service-link">See Pricing &rarr;</a>
+
+            <div class="timeline">
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+
+                    <div class="timeline-content">
+                        <span class="timeline-year">2018</span>
+                        <h3>The Beginning</h3>
+                        <p>
+                            Started exploring technology and discovered
+                            the joy of creating things from simple lines
+                            of code.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+
+                    <div class="timeline-content">
+                        <span class="timeline-year">2020</span>
+                        <h3>Learning Through Failure</h3>
+                        <p>
+                            Built projects that failed, rewrote countless
+                            lines of code, and learned that mistakes are
+                            part of growth.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+
+                    <div class="timeline-content">
+                        <span class="timeline-year">2023</span>
+                        <h3>Building for Others</h3>
+                        <p>
+                            Began creating applications that solve real
+                            problems and improve people's daily lives.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+
+                    <div class="timeline-content">
+                        <span class="timeline-year">Today</span>
+                        <h3>Exploring the Troverse</h3>
+                        <p>
+                            Still learning, still building, and turning
+                            experiences into stories worth sharing.
+                        </p>
+                    </div>
+                </div>
+
             </div>
-            <div class="service-card featured fade-up">
-                <div class="service-icon">🎮</div>
-                <div class="service-eyebrow">Game Development</div>
-                <div class="service-card-title">Unity &amp; Unreal Engine</div>
-                <p class="service-desc">I use animation as a third dimension by which to simplify experiences and
-                    building thru each and every interaction.</p>
-                <a href="#contact" class="service-link">See Pricing &rarr;</a>
-            </div>
-        </div>
-        <div class="section-dots">
-            <div class="sdot"></div>
-            <div class="sdot active"></div>
-            <div class="sdot"></div>
-            <div class="sdot"></div>
         </div>
     </section>
-
     <!-- PORTFOLIO -->
     <section id="portfolio">
         <div style="text-align:center;" class="fade-up">
-            <p class="section-eyebrow">Visit My Portfolio</p>
+            <p class="section-eyebrow">Visit My Works</p>
             <h2 class="section-title">My <span class="accent">Amazing Work</span></h2>
         </div>
         <div class="portfolio-grid">
             <div class="portfolio-card fade-up">
-                <div class="portfolio-img">📱</div>
+                <div class="portfolio-img">
+                    <img src="public/images/Charitfix.png" alt="Charitfix App" class="portfolio-img-card">
+                </div>
                 <div class="portfolio-body">
-                    <div class="portfolio-tag">Mobile App</div>
-                    <div class="portfolio-card-title">Mobile App Landing</div>
-                    <p class="portfolio-desc">I use animation as a third dimension by which to simplify experiences and
-                        building thru.</p>
-                    <a href="#" class="read-more">Read More &rarr;</a>
+                    <div class="portfolio-tag">Charity</div>
+                    <div class="portfolio-card-title">Charitfix App</div>
+                    <p class="portfolio-desc"> A charity platform dedicated to creating meaningful change through
+                        compassion, community, and
+                        collective action.
+                        Connecting donors, volunteers, and causes that make a lasting impact..</p>
+                    <a href="https://charitfix.github.io/charitfix/" class="read-more">Read More &rarr;</a>
                 </div>
             </div>
             <div class="portfolio-card fade-up">
-                <div class="portfolio-img">🎨</div>
+                <div class="portfolio-img">
+                    <img src="public/images/volt177.png" alt="VOLT17 App" class="portfolio-img-card">
+                </div>
                 <div class="portfolio-body">
-                    <div class="portfolio-tag">UI/UX Design</div>
-                    <div class="portfolio-card-title">Mobile App Landing</div>
-                    <p class="portfolio-desc">I use animation as a third dimension by which to simplify experiences and
-                        building thru.</p>
-                    <a href="#" class="read-more">Read More &rarr;</a>
+                    <div class="portfolio-tag">Gaming</div>
+                    <div class="portfolio-card-title">Indie Game Publisher</div>
+                    <p class="portfolio-desc">Publishing bold indie games for players who crave original stories,
+                        distinctive art, and memorable
+                        gameplay.
+                        We partner with visionary developers to turn ambitious ideas into remarkable experiences.</p>
+                    <a href="https://trover204.github.io/volt17/" class="read-more">Read More &rarr;</a>
                 </div>
             </div>
             <div class="portfolio-card fade-up">
-                <div class="portfolio-img">💻</div>
+                <div class="portfolio-img">
+                    <img src="public/images/Salehub.png" alt="Salehub App" class="portfolio-img-card">
+                </div>
                 <div class="portfolio-body">
-                    <div class="portfolio-tag">Web App</div>
-                    <div class="portfolio-card-title">Mobile App Landing</div>
-                    <p class="portfolio-desc">I use animation as a third dimension by which to simplify experiences and
-                        building thru.</p>
-                    <a href="#" class="read-more">Read More &rarr;</a>
+                    <div class="portfolio-tag">Fashion</div>
+                    <div class="portfolio-card-title">Expressing Oneself</div>
+                    <p class="portfolio-desc"> A contemporary fashion platform exploring timeless style, modern trends,
+                        and curated collections.
+                        Designed for individuals who express their identity through fashion.</p>
+                    <a href="https://chihai29.github.io/NguyenChiHai_23211TT046_prj4_fe1/" class="read-more">Read More
+                        &rarr;</a>
                 </div>
             </div>
         </div>
-        <div class="portfolio-nav">
-            <button class="pnav-btn">&larr;</button>
-            <button class="pnav-btn active">&rarr;</button>
-        </div>
+
     </section>
 
-    <!-- RESUME -->
+    <!-- RESUME
     <section id="resume">
         <div style="text-align:center;" class="fade-up">
             <p class="section-eyebrow">My Career Journey</p>
@@ -1216,7 +1398,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
 
     <!-- TESTIMONIALS -->
     <section id="testimonials">
@@ -1247,11 +1429,6 @@
                     <a href="#" class="learn-more">Learn More &rarr;</a>
                 </div>
             </div>
-        </div>
-        <div class="section-dots" style="margin-top:28px;">
-            <div class="sdot active"></div>
-            <div class="sdot"></div>
-            <div class="sdot"></div>
         </div>
     </section>
 
@@ -1310,13 +1487,13 @@
         </div>
         <div class="footer-col">
             <h4>Contact Us</h4>
-            <p>📍 32 Somewhere St, London, UK</p>
-            <p>📞 +44 20 1234 5678</p>
-            <p>✉️ hello@jamesryan.dev</p>
+            <p>📍 114/13/7 Truong Tho, Ho Chi Minh City</p>
+            <p>📞 0962048054</p>
+            <p>✉️ trover204@gmail.com</p>
         </div>
     </footer>
     <div class="footer-bottom">
-        © 2024 James Ryan. All Rights Reserved.
+        © 2024 Hoang Phuc. All Rights Reserved.
     </div>
 
     <script>

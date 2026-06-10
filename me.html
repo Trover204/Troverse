@@ -1,0 +1,1594 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nguyễn Chí Hải — Portfolio</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        /* Your CSS styles here */
+        *,
+*::before,
+*::after {
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box
+}
+
+html,
+body {
+   width: 100%;
+   height: 100%;
+   overflow: hidden;
+   background: #08090e;
+}
+
+:root {
+   --bg: #08090e;
+   --c1: #7c6af7;
+   --c2: #e879f9;
+   --c3: #38bdf8;
+   --c4: #4ade80;
+   --gold: #f59e0b;
+   --text: #f8fafc;
+   --muted: #94a3b8;
+   --border: rgba(255, 255, 255, 0.08);
+   --card: rgba(255, 255, 255, 0.04);
+}
+
+.av-photo {
+   width: 200px;
+   height: 200px;
+   border-radius: 50%;
+   overflow: hidden;
+}
+
+#bgCanvas {
+   position: fixed;
+   inset: 0;
+   z-index: 0;
+   pointer-events: none;
+}
+
+#cur {
+   position: fixed;
+   width: 12px;
+   height: 12px;
+   border-radius: 50%;
+   background: var(--c1);
+   pointer-events: none;
+   z-index: 9999;
+   transform: translate(-50%, -50%);
+   transition: transform .15s, width .2s, height .2s;
+   mix-blend-mode: screen;
+}
+
+#cur2 {
+   position: fixed;
+   width: 36px;
+   height: 36px;
+   border-radius: 50%;
+   border: 1px solid rgba(124, 106, 247, .4);
+   pointer-events: none;
+   z-index: 9998;
+   transform: translate(-50%, -50%);
+   transition: left .08s ease-out, top .08s ease-out;
+}
+
+#app {
+   position: fixed;
+   inset: 0;
+   z-index: 1;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+.section {
+   position: absolute;
+   inset: 0;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   opacity: 0;
+   pointer-events: none;
+}
+
+.section.active {
+   opacity: 1;
+   pointer-events: all;
+}
+
+/* SPIN OVERLAY */
+#spinner {
+   position: fixed;
+   inset: 0;
+   z-index: 500;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   pointer-events: none;
+   opacity: 0;
+   transition: opacity .15s;
+}
+
+.spin-ring {
+   position: absolute;
+   border-radius: 50%;
+   border: 2px solid transparent;
+}
+
+.spin-ring.r1 {
+   width: 100px;
+   height: 100px;
+   border-top-color: var(--c1);
+   border-right-color: var(--c1);
+}
+
+.spin-ring.r2 {
+   width: 160px;
+   height: 160px;
+   border-bottom-color: var(--c2);
+   border-left-color: var(--c2);
+}
+
+.spin-ring.r3 {
+   width: 220px;
+   height: 220px;
+   border-top-color: var(--c3);
+   border-right-color: var(--c3);
+}
+
+.spin-ring.r4 {
+   width: 300px;
+   height: 300px;
+   border-bottom-color: rgba(124, 106, 247, .3);
+   border-left-color: rgba(124, 106, 247, .3);
+}
+
+@keyframes spinCW {
+   from {
+      transform: rotate(0deg)
+   }
+
+   to {
+      transform: rotate(360deg)
+   }
+}
+
+@keyframes spinCCW {
+   from {
+      transform: rotate(0deg)
+   }
+
+   to {
+      transform: rotate(-360deg)
+   }
+}
+
+/* NAV */
+#nav {
+   position: fixed;
+   top: 0;
+   left: 0;
+   right: 0;
+   z-index: 100;
+   padding: 16px 48px;
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   backdrop-filter: blur(20px);
+   background: rgba(8, 9, 14, .7);
+   border-bottom: 1px solid var(--border);
+}
+
+.logo {
+   font-family: 'Syne', sans-serif;
+   font-weight: 800;
+   font-size: 18px;
+   background: linear-gradient(90deg, var(--c1), var(--c2));
+   -webkit-background-clip: text;
+   -webkit-text-fill-color: transparent;
+   background-clip: text;
+}
+
+.nav-tabs {
+   display: flex;
+   gap: 4px;
+}
+
+.nav-tab {
+   padding: 7px 16px;
+   border-radius: 8px;
+   font-family: 'Syne', sans-serif;
+   font-size: 11px;
+   font-weight: 600;
+   letter-spacing: .06em;
+   text-transform: uppercase;
+   color: var(--muted);
+   background: transparent;
+   border: none;
+   cursor: none;
+   transition: all .25s;
+}
+
+.nav-tab:hover {
+   color: var(--text);
+}
+
+.nav-tab.active {
+   background: rgba(124, 106, 247, .15);
+   color: var(--c1);
+   border: 1px solid rgba(124, 106, 247, .25);
+}
+
+/* DOTS + ARROWS */
+#dots {
+   position: fixed;
+   bottom: 28px;
+   left: 50%;
+   transform: translateX(-50%);
+   z-index: 100;
+   display: flex;
+   gap: 10px;
+   align-items: center;
+}
+
+.pdot {
+   width: 6px;
+   height: 6px;
+   border-radius: 3px;
+   background: var(--muted);
+   cursor: none;
+   transition: all .35s cubic-bezier(.16, 1, .3, 1);
+   opacity: .4;
+}
+
+.pdot.active {
+   width: 28px;
+   background: var(--c1);
+   opacity: 1;
+   box-shadow: 0 0 10px var(--c1);
+}
+
+#arrows {
+   position: fixed;
+   bottom: 20px;
+   right: 40px;
+   z-index: 100;
+   display: flex;
+   gap: 8px;
+}
+
+.arrbtn {
+   width: 38px;
+   height: 38px;
+   border-radius: 10px;
+   background: rgba(255, 255, 255, .05);
+   border: 1px solid var(--border);
+   color: var(--muted);
+   font-size: 15px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   cursor: none;
+   transition: all .25s;
+}
+
+.arrbtn:hover {
+   border-color: var(--c1);
+   color: var(--c1);
+}
+
+.arrbtn:disabled {
+   opacity: .2;
+   pointer-events: none;
+}
+
+/* PAGE TRANSITIONS */
+@keyframes fadeIn {
+   0% {
+      opacity: 0;
+      transform: translateY(12px);
+   }
+
+   100% {
+      opacity: 1;
+      transform: translateY(0);
+   }
+}
+
+@keyframes fadeOut {
+   0% {
+      opacity: 1;
+      transform: translateY(0);
+   }
+
+   100% {
+      opacity: 0;
+      transform: translateY(-12px);
+   }
+}
+
+.section.spin-in {
+   animation: fadeIn .5s cubic-bezier(.16, 1, .3, 1) forwards;
+}
+
+.section.spin-out {
+   animation: fadeOut .3s cubic-bezier(.55, 0, 1, .45) forwards;
+}
+
+/* ── SHARED ── */
+.p-eyebrow {
+   font-family: 'Syne', sans-serif;
+   font-size: 11px;
+   letter-spacing: .18em;
+   text-transform: uppercase;
+   color: var(--c1);
+   margin-bottom: 10px;
+   display: flex;
+   align-items: center;
+   gap: 8px;
+}
+
+.p-eyebrow::before {
+   content: '';
+   width: 20px;
+   height: 1px;
+   background: var(--c1);
+}
+
+.p-title {
+   font-family: 'Syne', sans-serif;
+   font-size: clamp(28px, 3.5vw, 44px);
+   font-weight: 800;
+   letter-spacing: -.02em;
+   margin-bottom: 36px;
+   line-height: 1.1;
+}
+
+/* ══════════════════════════
+   PAGE 0 — HOME
+══════════════════════════ */
+#p0 {
+   flex-direction: row;
+   padding: 80px 60px 40px;
+   gap: 0;
+}
+
+.home-left {
+   flex: 1;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   padding-right: 50px;
+}
+
+.tag-pill {
+   display: inline-flex;
+   align-items: center;
+   gap: 7px;
+   padding: 5px 14px;
+   border-radius: 999px;
+   background: rgba(74, 222, 128, .07);
+   border: 1px solid rgba(74, 222, 128, .2);
+   font-size: 11px;
+   color: var(--c4);
+   letter-spacing: .06em;
+   margin-bottom: 22px;
+   width: fit-content;
+}
+
+.tag-dot {
+   width: 6px;
+   height: 6px;
+   border-radius: 50%;
+   background: var(--c4);
+   box-shadow: 0 0 8px var(--c4);
+   animation: blink 2s infinite;
+}
+
+@keyframes blink {
+
+   0%,
+   100% {
+      opacity: 1
+   }
+
+   50% {
+      opacity: .3
+   }
+}
+
+.h-name {
+   font-family: 'Syne', sans-serif;
+   font-size: clamp(38px, 5vw, 64px);
+   font-weight: 800;
+   letter-spacing: -.03em;
+   line-height: 1.05;
+   background: linear-gradient(135deg, #fff 0%, var(--c1) 45%, var(--c2) 100%);
+   background-size: 200%;
+   -webkit-background-clip: text;
+   -webkit-text-fill-color: transparent;
+   background-clip: text;
+   animation: gradMove 5s ease infinite;
+}
+
+@keyframes gradMove {
+
+   0%,
+   100% {
+      background-position: 0%
+   }
+
+   50% {
+      background-position: 100%
+   }
+}
+
+.h-role {
+   font-size: 15px;
+   font-weight: 300;
+   color: var(--muted);
+   margin-top: 10px;
+   line-height: 1.6;
+}
+
+.h-role b {
+   color: var(--c2);
+   font-weight: 600;
+}
+
+.h-bio {
+   font-size: 13.5px;
+   color: var(--muted);
+   line-height: 1.85;
+   margin-top: 16px;
+   max-width: 420px;
+}
+
+.h-contact-row {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 10px;
+   margin-top: 20px;
+}
+
+.h-contact-chip {
+   display: inline-flex;
+   align-items: center;
+   gap: 7px;
+   padding: 6px 14px;
+   border-radius: 8px;
+   background: var(--card);
+   border: 1px solid var(--border);
+   font-size: 12px;
+   color: var(--muted);
+   text-decoration: none;
+   transition: all .25s;
+   cursor: none;
+}
+
+.h-contact-chip:hover {
+   border-color: rgba(124, 106, 247, .35);
+   color: var(--c1);
+}
+
+.h-contact-chip span {
+   font-size: 14px;
+}
+
+.h-stats {
+   display: flex;
+   gap: 28px;
+   margin-top: 22px;
+   padding-top: 20px;
+   border-top: 1px solid var(--border);
+}
+
+.h-stat-n {
+   font-family: 'Syne', sans-serif;
+   font-size: 26px;
+   font-weight: 800;
+   color: var(--text);
+}
+
+.h-stat-l {
+   font-size: 11px;
+   color: var(--muted);
+   margin-top: 2px;
+}
+
+/* AVATAR */
+.home-right {
+   width: 300px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   flex-shrink: 0;
+   position: relative;
+}
+
+.avatar-wrap {
+   position: relative;
+   width: 240px;
+   height: 240px;
+}
+
+.av-glow {
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   width: 300px;
+   height: 300px;
+   border-radius: 50%;
+   background: radial-gradient(circle, rgba(124, 106, 247, .2), transparent 65%);
+   filter: blur(18px);
+   animation: glowPulse 4s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+
+   0%,
+   100% {
+      opacity: .7;
+      transform: translate(-50%, -50%) scale(1)
+   }
+
+   50% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1.1)
+   }
+}
+
+.av-ring {
+   position: absolute;
+   border-radius: 50%;
+   border: 1.5px dashed transparent;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+}
+
+.av-ring.ar1 {
+   width: 270px;
+   height: 270px;
+   border-color: rgba(124, 106, 247, .3);
+   animation: spinCW 12s linear infinite;
+}
+
+.av-ring.ar2 {
+   width: 308px;
+   height: 308px;
+   border-color: rgba(232, 121, 249, .18);
+   border-style: dotted;
+   animation: spinCCW 18s linear infinite;
+}
+
+.av-ring.ar3 {
+   width: 346px;
+   height: 346px;
+   border-color: rgba(56, 189, 248, .12);
+   animation: spinCW 26s linear infinite;
+}
+
+.av-ring.ar1::before,
+.av-ring.ar1::after {
+   content: '';
+   position: absolute;
+   width: 8px;
+   height: 8px;
+   border-radius: 50%;
+   background: var(--c1);
+   top: -4px;
+   left: 50%;
+   transform: translateX(-50%);
+   box-shadow: 0 0 12px var(--c1);
+}
+
+.av-ring.ar1::after {
+   top: auto;
+   bottom: -4px;
+}
+
+.av-ring.ar2::before {
+   content: '';
+   position: absolute;
+   width: 6px;
+   height: 6px;
+   border-radius: 50%;
+   background: var(--c2);
+   top: -3px;
+   left: 50%;
+   transform: translateX(-50%);
+   box-shadow: 0 0 10px var(--c2);
+}
+
+.av-photo {
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   width: 230px;
+   height: 230px;
+   border-radius: 50%;
+   background: linear-gradient(135deg, rgba(124, 106, 247, .25), rgba(232, 121, 249, .25));
+   border: 2px solid rgba(255, 255, 255, .1);
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   overflow: hidden;
+   box-shadow: 0 0 0 1px rgba(124, 106, 247, .2), 0 20px 60px rgba(0, 0, 0, .5), inset 0 0 40px rgba(124, 106, 247, .1);
+}
+
+.av-mono {
+   font-family: 'Syne', sans-serif;
+   font-size: 64px;
+   font-weight: 800;
+   background: linear-gradient(135deg, var(--c1), var(--c2));
+   -webkit-background-clip: text;
+   -webkit-text-fill-color: transparent;
+   background-clip: text;
+   opacity: .8;
+   user-select: none;
+}
+
+.av-badge {
+   position: absolute;
+   background: rgba(8, 9, 14, .88);
+   border: 1px solid var(--border);
+   backdrop-filter: blur(12px);
+   border-radius: 12px;
+   padding: 8px 14px;
+   font-size: 12px;
+   white-space: nowrap;
+   box-shadow: 0 8px 32px rgba(0, 0, 0, .4);
+}
+
+.av-badge.b1 {
+   top: 5px;
+   right: -28px;
+   animation: floatY 3s ease-in-out infinite;
+}
+
+.av-badge.b2 {
+   bottom: 20px;
+   left: -36px;
+   animation: floatY 3.5s ease-in-out infinite;
+   animation-delay: -1.5s;
+}
+
+.av-badge.b3 {
+   top: 50%;
+   right: -44px;
+   transform: translateY(-50%);
+   animation: floatY 4s ease-in-out infinite;
+   animation-delay: -.8s;
+}
+
+@keyframes floatY {
+
+   0%,
+   100% {
+      transform: translateY(0)
+   }
+
+   50% {
+      transform: translateY(-8px)
+   }
+}
+
+.av-badge.b3 {
+   animation: floatY3 4s ease-in-out infinite;
+   animation-delay: -.8s;
+}
+
+@keyframes floatY3 {
+
+   0%,
+   100% {
+      transform: translateY(-50%)
+   }
+
+   50% {
+      transform: translateY(calc(-50% - 8px))
+   }
+}
+
+/* ══════════════════════════
+   PAGE 1 — SKILLS
+══════════════════════════ */
+#p1 {
+   flex-direction: column;
+   padding: 85px 60px 50px;
+   align-items: flex-start;
+   justify-content: center;
+}
+
+.sk-grid {
+   display: grid;
+   grid-template-columns: repeat(3, 1fr);
+   gap: 12px;
+   width: 100%;
+}
+
+.sk-card {
+   background: var(--card);
+   border: 1px solid var(--border);
+   border-radius: 14px;
+   padding: 18px 20px;
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
+   transition: all .3s cubic-bezier(.16, 1, .3, 1);
+   position: relative;
+   overflow: hidden;
+}
+
+.sk-card::before {
+   content: '';
+   position: absolute;
+   top: 0;
+   left: 0;
+   right: 0;
+   height: 2px;
+   background: linear-gradient(90deg, var(--c1), var(--c2));
+   transform: scaleX(0);
+   transform-origin: left;
+   transition: transform .4s;
+}
+
+.sk-card:hover {
+   border-color: rgba(124, 106, 247, .3);
+   transform: translateY(-4px);
+}
+
+.sk-card:hover::before {
+   transform: scaleX(1);
+}
+
+.sk-top {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+}
+
+.sk-icon {
+   font-size: 22px;
+}
+
+.sk-pct {
+   font-family: 'Syne', sans-serif;
+   font-size: 17px;
+   font-weight: 800;
+   color: var(--c1);
+}
+
+.sk-name {
+   font-size: 13px;
+   font-weight: 600;
+}
+
+.sk-bar-bg {
+   height: 3px;
+   background: rgba(255, 255, 255, .06);
+   border-radius: 999px;
+   overflow: hidden;
+}
+
+.sk-bar {
+   height: 100%;
+   border-radius: 999px;
+   background: linear-gradient(90deg, var(--c1), var(--c2));
+   width: 0;
+   transition: width 1.6s cubic-bezier(.16, 1, .3, 1);
+}
+
+.softskills {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 8px;
+   margin-top: 20px;
+}
+
+.sskill {
+   display: inline-flex;
+   align-items: center;
+   gap: 6px;
+   padding: 6px 14px;
+   border-radius: 8px;
+   background: rgba(56, 189, 248, .07);
+   border: 1px solid rgba(56, 189, 248, .15);
+   font-size: 12px;
+   color: var(--c3);
+}
+
+.sskill::before {
+   content: '✦';
+   font-size: 10px;
+}
+
+/* ══════════════════════════
+   PAGE 2 — PROJECTS
+══════════════════════════ */
+#p2 {
+   flex-direction: column;
+   padding: 85px 60px 50px;
+   align-items: flex-start;
+   justify-content: center;
+}
+
+.proj-grid {
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+   gap: 12px;
+   width: 100%;
+}
+
+.pj-card {
+   background: var(--card);
+   border: 1px solid var(--border);
+   border-radius: 16px;
+   padding: 22px 24px;
+   transition: all .35s cubic-bezier(.16, 1, .3, 1);
+   position: relative;
+   overflow: hidden;
+   cursor: none;
+}
+
+.pj-card::after {
+   content: '';
+   position: absolute;
+   inset: 0;
+   opacity: 0;
+   background: linear-gradient(135deg, rgba(124, 106, 247, .06), rgba(232, 121, 249, .04));
+   transition: opacity .3s;
+}
+
+.pj-card:hover {
+   border-color: rgba(124, 106, 247, .3);
+   transform: translateY(-5px) scale(1.01);
+   box-shadow: 0 24px 60px rgba(0, 0, 0, .4);
+}
+
+.pj-card:hover::after {
+   opacity: 1;
+}
+
+.pj-header {
+   display: flex;
+   align-items: center;
+   gap: 12px;
+   margin-bottom: 12px;
+}
+
+.pj-emoji {
+   font-size: 26px;
+}
+
+.pj-name {
+   font-family: 'Syne', sans-serif;
+   font-size: 16px;
+   font-weight: 700;
+}
+
+.pj-role-tag {
+   font-size: 10px;
+   padding: 2px 8px;
+   border-radius: 4px;
+   background: rgba(124, 106, 247, .1);
+   border: 1px solid rgba(124, 106, 247, .2);
+   color: var(--c1);
+   margin-left: auto;
+   white-space: nowrap;
+}
+
+.pj-desc {
+   font-size: 12.5px;
+   color: var(--muted);
+   line-height: 1.7;
+   margin-bottom: 10px;
+}
+
+.pj-result {
+   font-size: 11.5px;
+   color: var(--c4);
+   margin-bottom: 10px;
+   display: flex;
+   align-items: flex-start;
+   gap: 6px;
+}
+
+.pj-result::before {
+   content: '✓';
+   flex-shrink: 0;
+   margin-top: 1px;
+}
+
+.pj-tags {
+   display: flex;
+   gap: 5px;
+   flex-wrap: wrap;
+}
+
+.ptag {
+   font-size: 10px;
+   padding: 2px 9px;
+   border-radius: 4px;
+   background: rgba(124, 106, 247, .08);
+   border: 1px solid rgba(124, 106, 247, .15);
+   color: var(--c1);
+}
+
+.ptag.g {
+   background: rgba(74, 222, 128, .08);
+   border-color: rgba(74, 222, 128, .15);
+   color: var(--c4);
+}
+
+.ptag.p {
+   background: rgba(232, 121, 249, .08);
+   border-color: rgba(232, 121, 249, .15);
+   color: var(--c2);
+}
+
+.ptag.a {
+   background: rgba(245, 158, 11, .08);
+   border-color: rgba(245, 158, 11, .15);
+   color: var(--gold);
+}
+
+/* ══════════════════════════
+   PAGE 3 — GOAL + MOTTO
+══════════════════════════ */
+#p3 {
+   flex-direction: column;
+   padding: 85px 60px 50px;
+   align-items: flex-start;
+   justify-content: center;
+}
+
+.goal-grid {
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+   gap: 14px;
+   width: 100%;
+   margin-bottom: 20px;
+}
+
+.goal-card {
+   background: var(--card);
+   border: 1px solid var(--border);
+   border-radius: 16px;
+   padding: 24px 28px;
+   position: relative;
+   overflow: hidden;
+}
+
+.goal-card.short::before {
+   content: '';
+   position: absolute;
+   top: 0;
+   left: 0;
+   right: 0;
+   height: 2px;
+   background: linear-gradient(90deg, var(--c1), var(--c2));
+}
+
+.goal-card.long::before {
+   content: '';
+   position: absolute;
+   top: 0;
+   left: 0;
+   right: 0;
+   height: 2px;
+   background: linear-gradient(90deg, var(--c2), var(--c3));
+}
+
+.goal-h {
+   font-family: 'Syne', sans-serif;
+   font-size: 14px;
+   font-weight: 700;
+   margin-bottom: 14px;
+   display: flex;
+   align-items: center;
+   gap: 8px;
+}
+
+.goal-h span {
+   font-size: 16px;
+}
+
+.goal-list {
+   list-style: none;
+   display: flex;
+   flex-direction: column;
+   gap: 8px;
+}
+
+.goal-list li {
+   font-size: 13px;
+   color: var(--muted);
+   line-height: 1.6;
+   display: flex;
+   align-items: flex-start;
+   gap: 8px;
+}
+
+.goal-list li::before {
+   content: '→';
+   color: var(--c1);
+   flex-shrink: 0;
+   margin-top: 1px;
+}
+
+.goal-list.long li::before {
+   color: var(--c2);
+}
+
+.motto-strip {
+   width: 100%;
+   background: linear-gradient(135deg, rgba(124, 106, 247, .1), rgba(232, 121, 249, .08), rgba(56, 189, 248, .06));
+   border: 1px solid rgba(124, 106, 247, .2);
+   border-radius: 16px;
+   padding: 22px 30px;
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
+}
+
+.motto-item {
+   font-size: 14px;
+   color: var(--text);
+   line-height: 1.6;
+   display: flex;
+   align-items: flex-start;
+   gap: 10px;
+   font-style: italic;
+}
+
+.motto-item::before {
+   content: '"';
+   font-family: 'Syne', sans-serif;
+   font-size: 32px;
+   line-height: .8;
+   color: var(--c1);
+   opacity: .5;
+   flex-shrink: 0;
+   margin-top: 4px;
+}
+
+.award-row {
+   display: flex;
+   gap: 10px;
+   margin-top: 14px;
+   flex-wrap: wrap;
+}
+
+.award-chip {
+   display: inline-flex;
+   align-items: center;
+   gap: 7px;
+   padding: 7px 16px;
+   border-radius: 10px;
+   background: rgba(74, 222, 128, .07);
+   border: 1px solid rgba(74, 222, 128, .2);
+   font-size: 12px;
+   color: var(--c4);
+}
+
+.award-chip span {
+   font-size: 14px;
+}
+
+/* ══════════════════════════
+   PAGE 4 — CONTACT
+══════════════════════════ */
+#p4 {
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   padding-top: 80px;
+   gap: 0;
+}
+
+.ct-head {
+   text-align: center;
+   margin-bottom: 32px;
+}
+
+.ct-sub {
+   font-size: 13.5px;
+   color: var(--muted);
+   margin-top: 8px;
+   max-width: 420px;
+   margin-inline: auto;
+   line-height: 1.7;
+}
+
+.ct-grid {
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+   gap: 10px;
+   width: 580px;
+}
+
+.ct-card {
+   background: var(--card);
+   border: 1px solid var(--border);
+   border-radius: 16px;
+   padding: 18px 22px;
+   text-decoration: none;
+   color: var(--text);
+   display: flex;
+   align-items: center;
+   gap: 14px;
+   transition: all .3s;
+   position: relative;
+   overflow: hidden;
+   cursor: none;
+}
+
+.ct-card::before {
+   content: '';
+   position: absolute;
+   bottom: 0;
+   left: 0;
+   right: 0;
+   height: 2px;
+   background: linear-gradient(90deg, var(--c1), var(--c2));
+   transform: scaleX(0);
+   transform-origin: left;
+   transition: transform .35s;
+}
+
+.ct-card:hover {
+   border-color: rgba(124, 106, 247, .3);
+   transform: translateY(-3px);
+}
+
+.ct-card:hover::before {
+   transform: scaleX(1);
+}
+
+.ct-icon {
+   width: 42px;
+   height: 42px;
+   border-radius: 12px;
+   background: rgba(124, 106, 247, .12);
+   border: 1px solid rgba(124, 106, 247, .2);
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   font-size: 18px;
+   flex-shrink: 0;
+}
+
+.ct-label {
+   font-size: 11px;
+   color: var(--muted);
+   letter-spacing: .04em;
+}
+
+.ct-val {
+   font-size: 13px;
+   font-weight: 600;
+   margin-top: 2px;
+}
+
+.ct-addr {
+   width: 580px;
+   margin-top: 10px;
+   background: var(--card);
+   border: 1px solid var(--border);
+   border-radius: 16px;
+   padding: 16px 22px;
+   display: flex;
+   align-items: center;
+   gap: 14px;
+}
+
+.ct-addr-text {
+   font-size: 13px;
+   color: var(--muted);
+}
+
+.ct-addr-text b {
+   color: var(--text);
+   font-size: 14px;
+   display: block;
+   margin-bottom: 2px;
+}
+
+/* copyright */
+.copyright {
+   width: 580px;
+   margin-top: 12px;
+   text-align: center;
+   font-size: 11px;
+   color: var(--muted);
+   line-height: 1.7;
+   border-top: 1px solid var(--border);
+   padding-top: 12px;
+}
+    </style>
+</head>
+
+<body>
+
+    <div id="cur"></div>
+    <div id="cur2"></div>
+    <canvas id="bgCanvas"></canvas>
+
+    <nav id="nav">
+        <div class="logo">NCH.dev</div>
+        <div class="nav-tabs">
+            <button class="nav-tab active" data-page="0">Trang chủ</button>
+            <button class="nav-tab" data-page="1">Kỹ năng</button>
+            <button class="nav-tab" data-page="2">Dự án</button>
+            <button class="nav-tab" data-page="3">Mục tiêu</button>
+            <button class="nav-tab" data-page="4">Liên hệ</button>
+        </div>
+    </nav>
+
+    <div id="spinner">
+        <div class="spin-ring r4"></div>
+        <div class="spin-ring r3"></div>
+        <div class="spin-ring r2"></div>
+        <div class="spin-ring r1"></div>
+    </div>
+
+    <div id="app">
+
+        <!-- ═══ PAGE 0: HOME ═══ -->
+        <div class="section active" id="p0">
+            <div class="home-left">
+                <div class="tag-pill"><span class="tag-dot"></span>Đang tìm kiếm cơ hội thực tập</div>
+                <div
+                    style="font-family:'Syne',sans-serif;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">
+                    Xin chào, tôi là</div>
+                <h1 class="h-name">Nguyễn Chí Hải</h1>
+                <p class="h-role">Sinh viên <b>Công nghệ Thông tin</b> — hướng đến <b>Full Stack Developer</b></p>
+                <p class="h-bio">Tôi đam mê phát triển phần mềm và xây dựng ứng dụng web hiện đại. Luôn chủ động học
+                    hỏi, rèn luyện tư duy giải quyết vấn đề và không ngừng nâng cao chuyên môn để tạo ra sản phẩm có giá
+                    trị thực tiễn.</p>
+
+                <div class="h-contact-row">
+                    <a href="tel:0328579018" class="h-contact-chip"><span></span>0328 579 018</a>
+                    <a href="mailto:nguyenchihai648@gmail.com"
+                        class="h-contact-chip"><span></span>nguyenchihai648@gmail.com</a>
+                    <a href="https://github.com/nguyenchihai648-cmd" target="_blank"
+                        class="h-contact-chip"><span></span>GitHub</a>
+                </div>
+
+                <div class="h-stats">
+                    <div>
+                        <div class="h-stat-n">3+</div>
+                        <div class="h-stat-l">Dự án thực tế</div>
+                    </div>
+                    <div>
+                        <div class="h-stat-n">9+</div>
+                        <div class="h-stat-l">Công nghệ</div>
+                    </div>
+                    <div>
+                        <div class="h-stat-n">100%</div>
+                        <div class="h-stat-l">Đam mê</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="home-right">
+                <div class="avatar-wrap">
+                    <div class="av-glow"></div>
+                    <div class="av-ring ar3"></div>
+                    <div class="av-ring ar2"></div>
+                    <div class="av-ring ar1"></div>
+                    <div class="av-photo">
+                        <img src="images/z7908472928180_15d8be89118270447119add02867e120.jpg" alt="Ảnh đại diện"
+                            style="width:100%; height:100%; object-fit:cover; border-radius:50%;">
+                    </div>
+                    <div class="av-badge b1"><span style="font-size:13px"></span> Full Stack Dev</div>
+                    <div class="av-badge b2"><span style="font-size:13px"></span> CNTT Student</div>
+                    <div class="av-badge b3"><span style="font-size:13px"></span> HCM</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ PAGE 1: SKILLS ═══ -->
+        <div class="section" id="p1">
+            <div class="p-eyebrow">02 — Kỹ năng</div>
+            <h2 class="p-title">Công nghệ & <span style="color:var(--c1)">Kỹ năng</span></h2>
+            <div class="sk-grid">
+                <div class="sk-card">
+                    <div class="sk-top"><span class="sk-icon"></span><span class="sk-pct">90%</span></div>
+                    <div class="sk-name">HTML5</div>
+                    <div class="sk-bar-bg">
+                        <div class="sk-bar" data-w="90"></div>
+                    </div>
+                </div>
+                <div class="sk-card">
+                    <div class="sk-top"><span class="sk-icon"></span><span class="sk-pct">85%</span></div>
+                    <div class="sk-name">CSS3</div>
+                    <div class="sk-bar-bg">
+                        <div class="sk-bar" data-w="85"></div>
+                    </div>
+                </div>
+                <div class="sk-card">
+                    <div class="sk-top"><span class="sk-icon"></span><span class="sk-pct">90%</span></div>
+                    <div class="sk-name">Bootstrap</div>
+                    <div class="sk-bar-bg">
+                        <div class="sk-bar" data-w="90"></div>
+                    </div>
+                </div>
+                <div class="sk-card">
+                    <div class="sk-top"><span class="sk-icon"></span><span class="sk-pct">75%</span></div>
+                    <div class="sk-name">JavaScript</div>
+                    <div class="sk-bar-bg">
+                        <div class="sk-bar" data-w="75"></div>
+                    </div>
+                </div>
+                <div class="sk-card">
+                    <div class="sk-top"><span class="sk-icon"></span><span class="sk-pct">80%</span></div>
+                    <div class="sk-name">PHP & Laravel</div>
+                    <div class="sk-bar-bg">
+                        <div class="sk-bar" data-w="80"></div>
+                    </div>
+                </div>
+                <div class="sk-card">
+                    <div class="sk-top"><span class="sk-icon"></span><span class="sk-pct">85%</span></div>
+                    <div class="sk-name">Java</div>
+                    <div class="sk-bar-bg">
+                        <div class="sk-bar" data-w="85"></div>
+                    </div>
+                </div>
+                <div class="sk-card">
+                    <div class="sk-top"><span class="sk-icon"></span><span class="sk-pct">85%</span></div>
+                    <div class="sk-name">MySQL</div>
+                    <div class="sk-bar-bg">
+                        <div class="sk-bar" data-w="85"></div>
+                    </div>
+                </div>
+                <div class="sk-card">
+                    <div class="sk-top"><span class="sk-icon"></span><span class="sk-pct">80%</span></div>
+                    <div class="sk-name">Git & GitHub</div>
+                    <div class="sk-bar-bg">
+                        <div class="sk-bar" data-w="80"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="softskills">
+                <div class="sskill">Làm việc nhóm</div>
+                <div class="sskill">Quản lý thời gian</div>
+                <div class="sskill">Giải quyết vấn đề</div>
+                <div class="sskill">Tư duy logic</div>
+                <div class="sskill">Khả năng tự học</div>
+            </div>
+        </div>
+
+        <!-- ═══ PAGE 2: PROJECTS ═══ -->
+        <div class="section" id="p2">
+            <div class="p-eyebrow">03 — Dự án</div>
+            <h2 class="p-title">Dự án <span style="color:var(--c2)">tiêu biểu</span></h2>
+            <div class="proj-grid">
+                <div class="pj-card">
+                    <div class="pj-header">
+                        <span class="pj-emoji"></span>
+                        <span class="pj-name">Website Đặt Tour Du Lịch</span>
+                        <span class="pj-role-tag">Nhóm</span>
+                    </div>
+                    <div class="pj-desc">Hệ thống đặt tour trực tuyến: tìm kiếm, lọc tour, quản lý booking, quản lý
+                        người dùng & đơn hàng. Thiết kế CSDL và xây dựng giao diện người dùng.</div>
+                    <div class="pj-result">Hoàn thiện hệ thống đặt tour, hỗ trợ quản lý tour & khách hàng hiệu quả.
+                    </div>
+                    <div class="pj-tags"><span class="ptag a">PHP</span><span class="ptag">Laravel</span><span
+                            class="ptag g">MySQL</span><span class="ptag">Bootstrap</span><span
+                            class="ptag p">SmartGit</span></div>
+                </div>
+
+                <div class="pj-card">
+                    <div class="pj-header">
+                        <span class="pj-emoji"></span>
+                        <span class="pj-name">Hệ Thống Quản Lý Nhân Viên</span>
+                        <span class="pj-role-tag">Cá nhân</span>
+                    </div>
+                    <div class="pj-desc">Ứng dụng quản lý nhân sự: CRUD nhân viên, tìm kiếm, sắp xếp dữ liệu, thiết kế
+                        giao diện và kết nối cơ sở dữ liệu.</div>
+                    <div class="pj-result">Quản lý thông tin nhân viên hiệu quả, thao tác dữ liệu nhanh và chính xác.
+                    </div>
+                    <div class="pj-tags"><span class="ptag">JavaScript</span><span class="ptag g">MySQL</span></div>
+                </div>
+
+                <div class="pj-card">
+                    <div class="pj-header">
+                        <span class="pj-emoji"></span>
+                        <span class="pj-name">Game Tic Tac Toe</span>
+                        <span class="pj-role-tag">Cá nhân</span>
+                    </div>
+                    <div class="pj-desc">Trò chơi caro 2 người: đổi giao diện, đếm thời gian, reset bàn cờ. Rèn luyện kỹ
+                        năng JavaScript và xử lý sự kiện.</div>
+                    <div class="pj-result">Hoàn thành đầy đủ yêu cầu, cải thiện kỹ năng JS & xử lý sự kiện.</div>
+                    <div class="pj-tags"><span class="ptag">JavaScript</span><span class="ptag">HTML5</span><span
+                            class="ptag p">CSS3</span></div>
+                </div>
+
+                <div class="pj-card"
+                    style="background:linear-gradient(135deg,rgba(124,106,247,.06),rgba(232,121,249,.04));border-color:rgba(124,106,247,.2);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px;">
+                    <div style="font-size:36px"></div>
+                    <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--c1)">Đang phát
+                        triển thêm</div>
+                    <div style="font-size:12px;color:var(--muted);line-height:1.7">Đang học thêm Laravel, Java nâng cao
+                        & Front-end để xây dựng các dự án quy mô lớn hơn.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ PAGE 3: GOAL + MOTTO ═══ -->
+        <div class="section" id="p3">
+            <div class="p-eyebrow">04 — Mục tiêu</div>
+            <h2 class="p-title">Định hướng & <span style="color:var(--c3)">Phương châm</span></h2>
+
+            <div class="goal-grid">
+                <div class="goal-card short">
+                    <div class="goal-h"><span></span> Mục tiêu ngắn hạn</div>
+                    <ul class="goal-list">
+                        <li>Trở thành lập trình viên Full Stack chuyên nghiệp.</li>
+                        <li>Tham gia dự án thực tế để nâng cao kỹ năng phần mềm.</li>
+                        <li>Hoàn thiện kiến thức Laravel, JavaScript và CSDL.</li>
+                    </ul>
+                </div>
+                <div class="goal-card long">
+                    <div class="goal-h"><span></span> Mục tiêu dài hạn</div>
+                    <ul class="goal-list long">
+                        <li>Trở thành Senior Full Stack Developer.</li>
+                        <li>Xây dựng hệ thống web quy mô lớn, tối ưu hiệu suất.</li>
+                        <li>Đóng góp vào các dự án mang giá trị cho cộng đồng & doanh nghiệp.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="motto-strip">
+                <div class="motto-item">Luôn học hỏi, không ngừng phát triển và tạo ra giá trị thực tế thông qua công
+                    nghệ.</div>
+                <div class="motto-item">Tận tâm trong từng dòng mã, chuyên nghiệp trong từng sản phẩm.</div>
+            </div>
+
+            <div class="award-row">
+                <div class="award-chip"><span></span> Hoàn thành nhiều dự án Web Development</div>
+                <div class="award-chip"><span></span> Xây dựng hệ thống quản lý kết nối CSDL</div>
+                <div class="award-chip"><span></span> Đang học Laravel · Java · MySQL nâng cao</div>
+            </div>
+        </div>
+
+        <!-- ═══ PAGE 4: CONTACT ═══ -->
+        <div class="section" id="p4">
+            <div class="ct-head">
+                <div class="p-eyebrow" style="justify-content:center">05 — Liên hệ</div>
+                <h2 class="p-title">Kết nối với <span style="color:var(--c3)">tôi</span></h2>
+                <p class="ct-sub">Tôi đang tìm kiếm cơ hội thực tập & dự án hợp tác. Rất vui được kết nối và cùng nhau
+                    tạo ra những sản phẩm có giá trị!</p>
+            </div>
+            <div class="ct-grid">
+                <a href="tel:0328579018" class="ct-card">
+                    <div class="ct-icon"></div>
+                    <div>
+                        <div class="ct-label">Điện thoại</div>
+                        <div class="ct-val">0328 579 018</div>
+                    </div>
+                </a>
+                <a href="mailto:nguyenchihai648@gmail.com" class="ct-card">
+                    <div class="ct-icon"></div>
+                    <div>
+                        <div class="ct-label">Email</div>
+                        <div class="ct-val">nguyenchihai648@gmail.com</div>
+                    </div>
+                </a>
+                <a href="https://github.com/nguyenchihai648-cmd" target="_blank" class="ct-card">
+                    <div class="ct-icon"></div>
+                    <div>
+                        <div class="ct-label">GitHub</div>
+                        <div class="ct-val">nguyenchihai648-cmd</div>
+                    </div>
+                </a>
+                <a href="#" class="ct-card">
+                    <div class="ct-icon"></div>
+                    <div>
+                        <div class="ct-label">LinkedIn</div>
+                        <div class="ct-val">Kết nối chuyên nghiệp</div>
+                    </div>
+                </a>
+            </div>
+            <div class="ct-addr">
+                <div class="ct-icon"
+                    style="background:rgba(56,189,248,.1);border-color:rgba(56,189,248,.2);font-size:18px;"></div>
+                <div class="ct-addr-text"><b>Địa chỉ</b>586/2 Cộng Hòa, Phường 13, Tân Bình, TP. Hồ Chí Minh</div>
+            </div>
+            <div class="copyright">© 2025 Nguyễn Chí Hải · Tất cả nội dung thuộc quyền sở hữu của tác giả.<br>Vui lòng
+                không sao chép khi chưa có sự đồng ý.</div>
+        </div>
+
+    </div>
+
+    <div id="dots">
+        <div class="pdot active" data-page="0"></div>
+        <div class="pdot" data-page="1"></div>
+        <div class="pdot" data-page="2"></div>
+        <div class="pdot" data-page="3"></div>
+        <div class="pdot" data-page="4"></div>
+    </div>
+    <div id="arrows">
+        <button class="arrbtn" id="prevBtn" disabled>←</button>
+        <button class="arrbtn" id="nextBtn">→</button>
+    </div>
+
+    <script>
+        // BG CANVAS
+        const cv = document.getElementById('bgCanvas'), ctx = cv.getContext('2d');
+        function rsz() { cv.width = window.innerWidth; cv.height = window.innerHeight; }
+        rsz(); window.addEventListener('resize', rsz);
+        const orbs = [{ x: .15, y: .3, r: 320, c: 'rgba(124,106,247,', o: .07, sx: .0003, sy: .0002 }, { x: .8, y: .2, r: 260, c: 'rgba(232,121,249,', o: .06, sx: -.0002, sy: .0003 }, { x: .6, y: .8, r: 200, c: 'rgba(56,189,248,', o: .05, sx: .0004, sy: -.0002 }];
+        let t = 0;
+        (function drawBG() { t += .5; ctx.clearRect(0, 0, cv.width, cv.height); orbs.forEach(o => { const x = (o.x + Math.sin(t * o.sx) * 0.06) * cv.width, y = (o.y + Math.cos(t * o.sy) * 0.06) * cv.height, g = ctx.createRadialGradient(x, y, 0, x, y, o.r); g.addColorStop(0, o.c + o.o + ')'); g.addColorStop(1, o.c + '0)'); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, o.r, 0, Math.PI * 2); ctx.fill(); }); requestAnimationFrame(drawBG); })();
+
+        // CURSOR
+        const cur = document.getElementById('cur'), cur2 = document.getElementById('cur2');
+        let mx = window.innerWidth / 2, my = window.innerHeight / 2, cx = mx, cy = my;
+        document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cur.style.left = mx + 'px'; cur.style.top = my + 'px'; });
+        (function ac() { cx += (mx - cx) * .12; cy += (my - cy) * .12; cur2.style.left = cx + 'px'; cur2.style.top = cy + 'px'; requestAnimationFrame(ac); })();
+        document.querySelectorAll('a,button,.pj-card,.sk-card,.ct-card,.pdot,.arrbtn,.nav-tab').forEach(el => {
+            el.addEventListener('mouseenter', () => { cur.style.transform = 'translate(-50%,-50%) scale(2.5)'; cur.style.opacity = '.4'; });
+            el.addEventListener('mouseleave', () => { cur.style.transform = 'translate(-50%,-50%) scale(1)'; cur.style.opacity = '1'; });
+        });
+
+        // PAGE ENGINE
+        const TOTAL = 5; let current = 0, busy = false;
+        const sections = document.querySelectorAll('.section');
+        const tabs = document.querySelectorAll('.nav-tab');
+        const pdots = document.querySelectorAll('.pdot');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const spinner = document.getElementById('spinner');
+        const rings = spinner.querySelectorAll('.spin-ring');
+
+        function updateUI() {
+            tabs.forEach((t, i) => t.classList.toggle('active', i === current));
+            pdots.forEach((d, i) => d.classList.toggle('active', i === current));
+            prevBtn.disabled = current === 0;
+            nextBtn.disabled = current === TOTAL - 1;
+        }
+
+        function goTo(target) {
+            if (busy || target === current || target < 0 || target >= TOTAL) return;
+            busy = true;
+            const from = sections[current], to = sections[target];
+            from.classList.add('spin-out');
+            setTimeout(() => {
+                from.classList.remove('active', 'spin-out'); from.style.opacity = '0';
+                to.style.opacity = '1'; to.classList.add('active', 'spin-in');
+                setTimeout(() => {
+                    to.classList.remove('spin-in');
+                    current = target; busy = false; updateUI();
+                    if (current === 1) {
+                        document.querySelectorAll('#p1 .sk-bar').forEach(b => { b.style.width = '0'; setTimeout(() => { b.style.width = b.dataset.w + '%'; }, 80); });
+                    }
+                }, 500);
+            }, 300);
+        }
+
+        tabs.forEach(t => t.addEventListener('click', () => goTo(+t.dataset.page)));
+        pdots.forEach(d => d.addEventListener('click', () => goTo(+d.dataset.page)));
+        nextBtn.addEventListener('click', () => goTo(current + 1));
+        prevBtn.addEventListener('click', () => goTo(current - 1));
+        document.addEventListener('keydown', e => { if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goTo(current + 1); if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') goTo(current - 1); });
+        let wt, tx = 0;
+        document.addEventListener('wheel', e => { clearTimeout(wt); wt = setTimeout(() => { if (e.deltaY > 30) goTo(current + 1); else if (e.deltaY < -30) goTo(current - 1); }, 60); }, { passive: true });
+        document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; });
+        document.addEventListener('touchend', e => { const dx = e.changedTouches[0].clientX - tx; if (dx < -50) goTo(current + 1); if (dx > 50) goTo(current - 1); });
+        updateUI();
+    </script>
+</body>
+
+</html>
