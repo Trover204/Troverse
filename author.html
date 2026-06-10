@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>James Ryan – Full-Stack Expert Developer</title>
+    <title>DHP</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
         rel="stylesheet">
     <style>
@@ -391,7 +391,8 @@
             overflow: hidden;
             margin: 0 auto;
         }
-    .about-circle img {
+
+        .about-circle img {
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -754,15 +755,21 @@
         }
 
         .testi-avatar {
-            width: 52px;
-            height: 52px;
+            position: relative;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
             background: var(--purple-dim);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.4rem;
-            flex-shrink: 0;
+            overflow: hidden;
+        }
+        .testi-avatar .img{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .testi-name {
@@ -1007,14 +1014,6 @@
                 padding: 24px;
             }
 
-            .skill {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 12px;
-                animation: float 3s ease-in-out infinite;
-
-            }
 
             .service-card:hover {
                 background-color: #b89a6a;
@@ -1022,113 +1021,149 @@
                 border: 1px solid black;
             }
 
-            #life-journey {
-                padding: 120px 10%;
-                background: #050510;
-                position: relative;
+            .sk-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
+        }
+    </style>
 
-            .journey-container {
-                max-width: 1100px;
-                margin: auto;
-            }
+    <style>
+        /* ══════════════════════════
+           SKILLS SECTION
+        ══════════════════════════ */
 
-            .section-header {
-                text-align: center;
-                margin-bottom: 80px;
-            }
+        #skill {
+            background: var(--bg);
+            padding: 90px 60px;
+        }
 
-            .section-tag {
-                color: #a855f7;
-                letter-spacing: 3px;
-                font-size: 0.85rem;
-                font-weight: 600;
-            }
+        #skill .p-eyebrow {
+            font-size: .82rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            margin-bottom: 8px;
+            text-align: center;
+        }
 
-            .section-header h2 {
-                font-size: 3rem;
-                color: white;
-                margin: 15px 0;
-            }
+        #skill .p-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--white);
+            margin-bottom: 48px;
+            text-align: center;
+        }
 
-            .section-header p {
-                color: #a0a0b8;
-                max-width: 600px;
-                margin: auto;
-                line-height: 1.8;
-            }
+        .sk-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
 
-            .timeline {
-                position: relative;
-                padding-left: 40px;
-            }
+        .sk-card {
+            --c1: #b89a6a;
+            --c2: #e2c98a;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 22px 20px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: all .35s cubic-bezier(.16, 1, .3, 1);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px);
+        }
 
-            .timeline::before {
-                content: "";
-                position: absolute;
-                left: 9px;
-                top: 0;
-                width: 2px;
-                height: 100%;
-                background: linear-gradient(#ff00ff,
-                        #8b5cf6,
-                        #2563eb);
-            }
+        .sk-card.animate-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
-            .timeline-item {
-                position: relative;
-                margin-bottom: 60px;
-            }
+        .sk-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--c1), var(--c2));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform .4s ease;
+        }
 
-            .timeline-dot {
-                position: absolute;
-                left: -40px;
-                top: 10px;
+        .sk-card:hover {
+            border-color: rgba(184, 154, 106, .4);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 32px rgba(0,0,0,.35);
+        }
 
-                width: 20px;
-                height: 20px;
+        .sk-card:hover::before {
+            transform: scaleX(1);
+        }
 
-                border-radius: 50%;
+        /* per-card accent colors */
+        .sk-card[data-sk="html"]   { --c1: #e44d26; --c2: #f16529; }
+        .sk-card[data-sk="css"]    { --c1: #264de4; --c2: #2965f1; }
+        .sk-card[data-sk="bs"]     { --c1: #7952b3; --c2: #a57ee8; }
+        .sk-card[data-sk="js"]     { --c1: #f0db4f; --c2: #f7e27a; }
+        .sk-card[data-sk="php"]    { --c1: #8892be; --c2: #aab2d4; }
+        .sk-card[data-sk="java"]   { --c1: #f89820; --c2: #fbb040; }
+        .sk-card[data-sk="mysql"]  { --c1: #00758f; --c2: #00aacc; }
+        .sk-card[data-sk="git"]    { --c1: #f05032; --c2: #f47055; }
 
-                background: #8b5cf6;
+        .sk-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
 
-                box-shadow:
-                    0 0 15px #8b5cf6,
-                    0 0 30px #8b5cf6;
-            }
+        .sk-icon {
+            font-size: 24px;
+            line-height: 1;
+        }
 
-            .timeline-content {
-                background: rgba(255, 255, 255, 0.04);
-                backdrop-filter: blur(10px);
+        .sk-pct {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--c1);
+            font-variant-numeric: tabular-nums;
+        }
 
-                border: 1px solid rgba(255, 255, 255, 0.08);
+        .sk-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+        }
 
-                border-radius: 20px;
+        .sk-bar-bg {
+            height: 4px;
+            background: rgba(255, 255, 255, .07);
+            border-radius: 999px;
+            overflow: hidden;
+        }
 
-                padding: 25px;
-                transition: 0.3s;
-            }
+        .sk-bar {
+            height: 100%;
+            border-radius: 999px;
+            background: linear-gradient(90deg, var(--c1), var(--c2));
+            width: 0;
+            transition: width 1.4s cubic-bezier(.16, 1, .3, 1);
+        }
 
-            .timeline-content:hover {
-                transform: translateY(-5px);
-                border-color: #8b5cf6;
-            }
+        @media (max-width: 900px) {
+            #skill { padding: 60px 24px; }
+            .sk-grid { grid-template-columns: repeat(2, 1fr); }
+        }
 
-            .timeline-year {
-                color: #a855f7;
-                font-weight: 700;
-            }
-
-            .timeline-content h3 {
-                color: white;
-                margin: 10px 0;
-            }
-
-            .timeline-content p {
-                color: #b6b6c7;
-                line-height: 1.8;
-            }
-
+        @media (max-width: 480px) {
+            .sk-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
         }
     </style>
 </head>
@@ -1137,7 +1172,7 @@
 
     <!-- NAV -->
     <nav>
-        <div class="logo"> DH <span>P</span></div>
+        <div class="logo"> D<span>HP</span></div>
         <ul class="nav-links">
             <li><a href="#home">Home</a></li>
             <li><a href="#about">About Me</a></li>
@@ -1171,10 +1206,10 @@
         </div>
     </section>
 
-    <!-- STATS
+    <!-- STATS-->
     <div class="stats-bar">
         <div class="stat fade-up">
-            <div class="stat-num">8<span>+</span></div>
+            <div class="stat-num">4<span>+</span></div>
             <div class="stat-label">Years of Experience</div>
         </div>
         <div class="stat fade-up">
@@ -1189,14 +1224,14 @@
             <div class="stat-num">15<span>+</span></div>
             <div class="stat-label">Awards Won</div>
         </div>
-    </div> -->
+    </div>
 
     <!-- ABOUT -->
     <section id="about">
         <div class="about-grid">
             <div class="about-img-wrap fade-up">
                 <div class="about-circle">
-                       <img src="public/images/portrait33.jpg" alt="Hoang Phuc">
+                    <img src="public/images/portrait33.jpg" alt="Hoang Phuc">
                 </div>
                 <div class="about-dot1"></div>
                 <div class="about-tri"></div>
@@ -1204,7 +1239,7 @@
             <div class="fade-up">
                 <p class="section-eyebrow">About Me</p>
                 <h2 class="section-title">Hoang <span class="accent">Phuc</span></h2>
-                <p class="about-desc">Hello! I'm Hoang Phuc, Web Developer with over 8 years of experience. Experienced
+                <p class="about-desc">Hello! I'm Hoang Phuc, Web Developer with over 4 years of experience. Experienced
                     with all stages of the development cycle for dynamic web projects. Having an in-depth knowledge
                     including advanced HTML5, CSS3, JavaScript, jQuery, Angular JS. Strong background in management and
                     leadership.</p>
@@ -1223,75 +1258,49 @@
             </div>
         </div>
     </section>
-
-    <section id="life-journey">
-        <div class="journey-container">
-
-            <div class="section-header">
-                <span class="section-tag">MY JOURNEY</span>
-                <h2>Life Experiences</h2>
-                <p>
-                    Every challenge, every mistake, and every success
-                    became a star in my universe.
-                </p>
+    <section id="skill">
+        <div class="p-eyebrow">Technical Skills</div>
+        <h2 class="p-title">Công nghệ &amp; <span style="color:#b89a6a">Kỹ năng</span></h2>
+        <div class="sk-grid">
+            <div class="sk-card" data-sk="html">
+                <div class="sk-top"><span class="sk-icon">🌐</span><span class="sk-pct">90%</span></div>
+                <div class="sk-name">HTML5</div>
+                <div class="sk-bar-bg"><div class="sk-bar" data-w="90"></div></div>
             </div>
-
-            <div class="timeline">
-
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-
-                    <div class="timeline-content">
-                        <span class="timeline-year">2018</span>
-                        <h3>The Beginning</h3>
-                        <p>
-                            Started exploring technology and discovered
-                            the joy of creating things from simple lines
-                            of code.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-
-                    <div class="timeline-content">
-                        <span class="timeline-year">2020</span>
-                        <h3>Learning Through Failure</h3>
-                        <p>
-                            Built projects that failed, rewrote countless
-                            lines of code, and learned that mistakes are
-                            part of growth.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-
-                    <div class="timeline-content">
-                        <span class="timeline-year">2023</span>
-                        <h3>Building for Others</h3>
-                        <p>
-                            Began creating applications that solve real
-                            problems and improve people's daily lives.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-
-                    <div class="timeline-content">
-                        <span class="timeline-year">Today</span>
-                        <h3>Exploring the Troverse</h3>
-                        <p>
-                            Still learning, still building, and turning
-                            experiences into stories worth sharing.
-                        </p>
-                    </div>
-                </div>
-
+            <div class="sk-card" data-sk="css">
+                <div class="sk-top"><span class="sk-icon">🎨</span><span class="sk-pct">85%</span></div>
+                <div class="sk-name">CSS3</div>
+                <div class="sk-bar-bg"><div class="sk-bar" data-w="85"></div></div>
+            </div>
+            <div class="sk-card" data-sk="bs">
+                <div class="sk-top"><span class="sk-icon">⚡</span><span class="sk-pct">90%</span></div>
+                <div class="sk-name">Bootstrap</div>
+                <div class="sk-bar-bg"><div class="sk-bar" data-w="90"></div></div>
+            </div>
+            <div class="sk-card" data-sk="js">
+                <div class="sk-top"><span class="sk-icon">🟨</span><span class="sk-pct">75%</span></div>
+                <div class="sk-name">JavaScript</div>
+                <div class="sk-bar-bg"><div class="sk-bar" data-w="75"></div></div>
+            </div>
+            <div class="sk-card" data-sk="php">
+                <div class="sk-top"><span class="sk-icon">🐘</span><span class="sk-pct">80%</span></div>
+                <div class="sk-name">PHP &amp; Laravel</div>
+                <div class="sk-bar-bg"><div class="sk-bar" data-w="80"></div></div>
+            </div>
+            <div class="sk-card" data-sk="java">
+                <div class="sk-top"><span class="sk-icon">☕</span><span class="sk-pct">85%</span></div>
+                <div class="sk-name">Java</div>
+                <div class="sk-bar-bg"><div class="sk-bar" data-w="85"></div></div>
+            </div>
+            <div class="sk-card" data-sk="mysql">
+                <div class="sk-top"><span class="sk-icon">🗄️</span><span class="sk-pct">85%</span></div>
+                <div class="sk-name">MySQL</div>
+                <div class="sk-bar-bg"><div class="sk-bar" data-w="85"></div></div>
+            </div>
+            <div class="sk-card" data-sk="git">
+                <div class="sk-top"><span class="sk-icon">🔀</span><span class="sk-pct">80%</span></div>
+                <div class="sk-name">Git &amp; GitHub</div>
+                <div class="sk-bar-bg"><div class="sk-bar" data-w="80"></div></div>
             </div>
         </div>
     </section>
@@ -1408,9 +1417,11 @@
         </div>
         <div class="testi-grid">
             <div class="testi-card fade-up">
-                <div class="testi-avatar">👩</div>
+                <div class="testi-avatar">
+                    <img src="public/images/testi1.png" alt="">
+                </div>
                 <div>
-                    <div class="testi-name">Emma Watson</div>
+                    <div class="testi-name">Chi Hai</div>
                     <div class="testi-role">Product Designer, Google</div>
                     <div class="stars">★★★★★</div>
                     <p class="testi-text">I use animation as a third dimension by which to simplify experiences and
@@ -1419,9 +1430,11 @@
                 </div>
             </div>
             <div class="testi-card fade-up">
-                <div class="testi-avatar">👩‍🦱</div>
+                <div class="testi-avatar">
+                    <img src="public/images/test2.jpg" alt="">
+                </div>
                 <div>
-                    <div class="testi-name">Claire Madisson</div>
+                    <div class="testi-name">Trung Phuc</div>
                     <div class="testi-role">CEO, StartupHub</div>
                     <div class="stars">★★★★★</div>
                     <p class="testi-text">I use animation as a third dimension by which to simplify experiences and
@@ -1504,6 +1517,24 @@
             });
         }, { threshold: 0.12 });
         document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+        // Skills section: staggered card reveal + progress bar animation
+        const skObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                const cards = entry.target.querySelectorAll('.sk-card');
+                cards.forEach((card, i) => {
+                    setTimeout(() => {
+                        card.classList.add('animate-in');
+                        const bar = card.querySelector('.sk-bar');
+                        if (bar) bar.style.width = bar.dataset.w + '%';
+                    }, i * 80);
+                });
+                skObserver.unobserve(entry.target);
+            });
+        }, { threshold: 0.15 });
+        const skillSection = document.getElementById('skill');
+        if (skillSection) skObserver.observe(skillSection);
 
         // Contact form
         function handleSubmit(e) {
